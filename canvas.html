@@ -7,9 +7,13 @@
 
 
     <style>
+        
         canvas {
-            border: 100;
-            background-image: url("portfolioBG.png");
+            border: 0;
+            background-image: url("grass.png");
+            background-size: 10000000000;
+            background-position: center center;
+            position: fixed;
         }
     </style>
 
@@ -31,6 +35,7 @@
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.interval = setInterval(updateMap, 20);
+                
                 window.addEventListener('keydown', function (e) {
                     gameMap.keys = (gameMap.keys || []);
                     gameMap.keys[e.keyCode] = true;
@@ -40,15 +45,13 @@
                 })
                 window.addEventListener('keypressed', function (e) {
                     gameMap.keys[e.keyCode] = true;
-                } )
+                })
             },
 
             clear: function () {
                 this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
             }
         }
-
-
 
         function avatar(width, height, color, xpos, ypos) {
             this.gameMap = gameMap;
@@ -71,12 +74,12 @@
 
         }
 
-
         function updateMap() {
             gameMap.clear();
             user.speedX = 0;
             user.speedY = 0;
             speedFactor = 1;
+            
             if (gameMap.keys && gameMap.keys[16]) { speedFactor = 3; }
             if (gameMap.keys && gameMap.keys[37]) { user.speedX = -2 * speedFactor; }
             if (gameMap.keys && gameMap.keys[39]) { user.speedX = 2 * speedFactor; }
@@ -87,8 +90,5 @@
         }
 
     </script>
-
-
-
 
 </body>
