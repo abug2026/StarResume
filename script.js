@@ -1,105 +1,158 @@
 var user;
-var gridSize = 25; // Define the grid size
-var moveDistance = gridSize; // Move one grid square at a time
-var lastDirection = null; // Keep track of the last movement direction
+        const gridSize = 50; // Define the grid size
+        var moveDistance = gridSize; // Move one grid square at a time
+        var lastDirection = null; // Keep track of the last movement direction
+        /*
+        signs = [];
+        signs.push(new signs(100, 0, 150, 100, false));
+        signs.push(new signs(0, 250, 100, 150, false));
+        signs.push(new signs(0, 600, 200, 100, false));
+        signs.push(new signs(450, 750, 600, 50, false));
+        signs.push(new signs(1400, 250, 100, 150, false));
+        signs.push(new signs(1300, 600, 200, 100, false));
+        */
 
-//Initializes the game
-function startGame() {
-    gameMap.start();
-    user = new avatar(50, 50, "red", 525, 125);
-}
+        //Arrow key codes
+        const upArrow = 38;
+        const downArrow = 40;
+        const leftArrow = 37;
+        const rightArrow = 39;
 
-//Defines the gameMap Canvas
-var gameMap = {
-    canvas: document.createElement("canvas"),
-    start: function () {  // Activates upon calling start on the canvas object
-        this.canvas.width = innerWidth; //Sets the canvas width to the computer screen width
-        this.canvas.height = innerHeight; //Sets the canvas height to the computer screen height
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateMap, 20);
+        //WASD key codes
+        const wKey = 87;
+        const sKey = 83;
+        const aKey = 65;
+        const dKey = 68;
 
-        window.addEventListener('keydown', function (e) { //If a key is down, its array value is set to true
-            gameMap.keys = (gameMap.keys || []);
-            gameMap.keys[e.keyCode] = true;
-            avatarMovement(e.keyCode);
-        })
-        window.addEventListener('keyup', function (e) { //If a key is up then its array value is set to false
-            gameMap.keys[e.keyCode] = false;
-        })
-    },
+        //Initializes the game
+        function startGame() {
+            gameMap.start();
+            user = new avatar(50, 50, "red", 550, 300);
+        }
 
-    clear: function () { //Clears the map, used to ensure the moving objects appear to move rather than get smeared across the page
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-}
+        //Defines the gameMap Canvas
+        var gameMap = {
+            canvas: document.createElement("canvas"),
+            start: function () {  // Activates upon calling start on the canvas object
+                this.canvas.width = innerWidth; //Sets the canvas width to the computer screen width
+                this.canvas.height = innerHeight; //Sets the canvas height to the computer screen height
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateMap, 20);
 
-// Function that creates the avatar and updates its coordinates
-function avatar(width, height, color, xpos, ypos) {
-    this.gameMap = gameMap;
-    this.width = width;
-    this.height = height;
-    this.speedX = 0;
-    this.speedY = 0;
-    this.xpos = xpos;
-    this.ypos = ypos;
-    this.update = function () {
-        ctx = gameMap.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.xpos, this.ypos, this.width, this.height);
-    }
-    this.newPos = function () {
-        this.xpos += this.speedX;
-        this.ypos += this.speedY;
-        this.xpos = Math.round(this.xpos / gridSize) * gridSize;
-        this.ypos = Math.round(this.ypos / gridSize) * gridSize;
-    }
-}
+                gameMap.keys = [];
+                for (var i = 0; i < 256; i++) {
+                    gameMap.keys[i] = false;
+                }
 
-//Avatar movement based on key press
-function avatarMovement(keyCode) {
-    user.speedX = 0;
-    user.speedY = 0;
-    var moveDistance = gridSize; // Move one grid square at a time
+                window.addEventListener('keydown', function (e) { //If a key is down, its array value is set to true
+                    gameMap.keys[e.keyCode] = true;
+                    avatarMovement(e.keyCode);
+                })
+                window.addEventListener('keyup', function (e) { //If a key is up then its array value is set to false
+                    gameMap.keys[e.keyCode] = false;
+                })
+            },
 
-    if (gameMap.keys && gameMap.keys[16]) { moveDistance *= 2; } // Increase speed by 50% when shift is held
+            clear: function () { //Clears the map, used to ensure the moving objects appear to move rather than get smeared across the page
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
 
-    var directions = [];
-    if (gameMap.keys[37]) { directions.push('left'); } // Move left
-    if (gameMap.keys[39]) { directions.push('right'); } // Move right
-    if (gameMap.keys[38]) { directions.push('up'); } // Move up
-    if (gameMap.keys[40]) { directions.push('down'); } // Move down
+        // Function that creates the avatar and updates its coordinates
+        function avatar(width, height, color, xpos, ypos) {
+            this.gameMap = gameMap;
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.xpos = xpos;
+            this.ypos = ypos;
+            this.update = function () {
+                ctx = gameMap.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.xpos, this.ypos, this.width, this.height);
+            }
+            this.newPos = function () {
+                this.xpos += this.speedX;
+                this.ypos += this.speedY;
 
-    if (directions.length > 1) {
-        if (lastDirection === directions[0]) {
-            lastDirection = directions[1];
-        } else {
+                // Ensure the avatar stays within the canvas boundaries
+                this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width  - (this.width + 15)));
+                this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 15)));
+
+                this.xpos = Math.round(this.xpos / gridSize) * gridSize;
+                this.ypos = Math.round(this.ypos / gridSize) * gridSize;
+            }
+        }
+
+        //Avatar movement based on key press
+        function avatarMovement(keyCode) {
+            user.speedX = 0;
+            user.speedY = 0;
+            var moveDistance = gridSize; // Move one grid square at a time
+
+            if (gameMap.keys && gameMap.keys[16]) { moveDistance *= 2; } // Increase speed when shift is held
+
+            var directions = [];
+
+            var canMove = true;
+
+            if ((gameMap.keys[leftArrow] || gameMap.keys[aKey]) && user.xpos >= 50) { canMove = true; directions.push('left'); } // Move left
+            if ((gameMap.keys[rightArrow] || gameMap.keys[dKey]) && user.xpos + user.width <= gameMap.canvas.width - 50) { canMove = true; directions.push('right'); } // Move right
+            if ((gameMap.keys[upArrow] || gameMap.keys[wKey]) && user.ypos >= 50) { canMove = true; directions.push('up'); } // Move up
+            if ((gameMap.keys[downArrow] || gameMap.keys[sKey]) && user.ypos + user.height <= gameMap.canvas.height - 50) { canMove = true; directions.push('down'); } // Move down
+
+            if (canMove === false) {directions = null; directions.push('none');}
+            
+
+        if (directions.length > 1) {
+            if (lastDirection === directions[0]) {
+                lastDirection = directions[1];
+            } else {
+                lastDirection = directions[0];
+            }
+        } else if (directions.length === 1) {
             lastDirection = directions[0];
         }
-    } else if (directions.length === 1) {
-        lastDirection = directions[0];
-    }
 
-    switch (lastDirection) {
-        case 'left':
-            user.speedX = -moveDistance;
-            break;
-        case 'right':
-            user.speedX = moveDistance;
-            break;
-        case 'up':
-            user.speedY = -moveDistance;
-            break;
-        case 'down':
-            user.speedY = moveDistance;
-            break;
-    }
+        switch (lastDirection) { //uses switch cases to allow for multi-directional movement
+            case 'left':
+                user.speedX = -moveDistance;
+                break;
+            case 'right':
+                user.speedX = moveDistance;
+                break;
+            case 'up':
+                user.speedY = -moveDistance;
+                break;
+            case 'down':
+                user.speedY = moveDistance;
+                break;
+            case null:
+                user.speedX = 0;
+                user.speedY = 0;
+                break;
+        }
 
-    user.newPos();
-}
+        user.newPos();
+        }
 
-//Clears map then updates avatar locations as defined
-function updateMap() {
-    gameMap.clear();
-    user.update();
-}
+        function signs(width, height, xpos, ypos, interacted) {
+            this.gameMap = gameMap;
+            this.width = width;
+            this.height = height;
+            this.xpos = xpos;
+            this.ypos = ypos;
+            interacted = false;
+
+            if (interacted) {
+                console.log("true");
+            }
+        }
+
+        //Clears map then updates avatar locations as defined
+        function updateMap() {
+            gameMap.clear();
+            user.update();
+        }
