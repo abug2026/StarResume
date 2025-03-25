@@ -10,3 +10,43 @@ canvas {
     background-position: left top;
     position: fixed;
 }
+
+#resumeOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    display: none; /* Hidden by default */
+    z-index: 10000; /* Ensure it appears above other elements */
+}
+
+#resumeIframe {
+    width: 80%;
+    height: 80%;
+    margin: 5% auto;
+    display: block;
+    border: none;
+    background: white;
+}
+
+#closeOverlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    z-index: 100;
+}
+
+#resumeButton {
+    position: relative; 
+    z-index: 1100; 
+    color: #fdf6e3; 
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}

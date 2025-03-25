@@ -20,13 +20,13 @@ body {
 /* Header styling */
 .resume-header {
     background-color: #002855; 
-    padding: 20px;
+    padding: 30px;
     text-align: center;
     border-bottom: 3px solid #001d3d; 
 }
 
 .resume-header h1 {
-    font-size: 20px;
+    font-size: 50px;
     margin: 0;
     color: #fdf6e3; 
 }

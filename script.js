@@ -156,3 +156,11 @@ var user;
             gameMap.clear();
             user.update();
         }
+
+        // Open the resume overlay
+        document.getElementById('openResume').addEventListener('click', () => {
+            console.log('Open resume clicked!');
+            document.getElementById('resumeOverlay').style.display = 'block';
+        });
+
+        //add resume closing code from resume.html / jumpyavatar.js
