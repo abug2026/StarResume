@@ -3,8 +3,8 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fdf6e3; /* Cream background */
-    color: #002855; /* Navy blue text */
+    background-color: #fdf6e3; 
+    color: #002855; 
 }
 
 .headers {
@@ -19,38 +19,38 @@ body {
 
 /* Header styling */
 .resume-header {
-    background-color: #002855; /* Navy blue for header */
+    background-color: #002855; 
     padding: 20px;
     text-align: center;
-    border-bottom: 3px solid #001d3d; /* Darker navy accent */
+    border-bottom: 3px solid #001d3d; 
 }
 
 .resume-header h1 {
-    font-size: 2.5rem;
+    font-size: 20px;
     margin: 0;
-    color: #fdf6e3; /* Cream text for contrast */
+    color: #fdf6e3; 
 }
 
 .resume-header p {
-    margin: 5px 0;
-    font-size: 1rem;
-    color: #fdf6e3; /* Cream text */
+    margin: 5px ;
+    font-size:20px;
+    color: #fdf6e3; 
 }
 
 /* Section styling */
 .resume-section {
-    margin: 20px 0;
+    margin: 20px ;
     padding: 20px;
-    background-color: #ffffff; /* White for sections */
+    background-color: #ffffff; 
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #002855; /* Navy blue accent */
+    border-left: 5px solid #002855; 
 }
 
 .resume-section h2 {
-    font-size: 1.8rem;
+    font-size: 18px;
     margin-bottom: 15px;
-    color: #002855; /* Navy blue for section titles */
+    color: #002855;
     border-bottom: 2px solid #002855;
     padding-bottom: 5px;
 }
@@ -64,17 +64,17 @@ body {
 
 .resume-content .section-item {
     flex: 1 1 calc(50% - 20px);
-    background-color: #fdf6e3; /* Cream for items */
+    background-color: #fdf6e3; 
     padding: 15px;
     border-radius: 5px;
-    color: #002855; /* Navy blue text */
+    color: #002855;
     border: 1px solid #002855;
 }
 
 .resume-content .section-item h5 {
-    font-size: 1.2rem;
+    font-size: 15px;
     margin-bottom: 10px;
-    color: #002855; /* Navy blue for item titles */
+    color: #002855; 
 }
 
 .resume-content .section-item ul {
@@ -89,10 +89,10 @@ body {
 .resume-footer {
     text-align: center;
     padding: 10px;
-    background-color: #002855; /* Navy blue for footer */
+    background-color: #002855; 
     margin-top: 20px;
-    color: #fdf6e3; /* Cream text */
-    border-top: 3px solid #001d3d; /* Darker navy accent */
+    color: #fdf6e3; 
+    border-top: 3px solid #001d3d; 
 }
 
 /* Home icon canvas styling */
