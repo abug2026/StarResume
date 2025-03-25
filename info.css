@@ -3,6 +3,8 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #fdf6e3; /* Cream background */
+    color: #002855; /* Navy blue text */
 }
 
 .headers {
@@ -15,23 +17,45 @@ body {
     text-align: center;
 }
 
+/* Header styling */
 .resume-header {
-    background-color: #f8f9fa;
+    background-color: #002855; /* Navy blue for header */
     padding: 20px;
     text-align: center;
-    z-index: 0;
+    border-bottom: 3px solid #001d3d; /* Darker navy accent */
 }
 
+.resume-header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: #fdf6e3; /* Cream text for contrast */
+}
 
+.resume-header p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #fdf6e3; /* Cream text */
+}
+
+/* Section styling */
 .resume-section {
     margin: 20px 0;
+    padding: 20px;
+    background-color: #ffffff; /* White for sections */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #002855; /* Navy blue accent */
 }
 
 .resume-section h2 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     margin-bottom: 15px;
+    color: #002855; /* Navy blue for section titles */
+    border-bottom: 2px solid #002855;
+    padding-bottom: 5px;
 }
 
+/* Content styling */
 .resume-content {
     display: flex;
     flex-wrap: wrap;
@@ -40,23 +64,43 @@ body {
 
 .resume-content .section-item {
     flex: 1 1 calc(50% - 20px);
-    background-color: #f8f9fa;
+    background-color: #fdf6e3; /* Cream for items */
     padding: 15px;
     border-radius: 5px;
+    color: #002855; /* Navy blue text */
+    border: 1px solid #002855;
 }
 
+.resume-content .section-item h5 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #002855; /* Navy blue for item titles */
+}
+
+.resume-content .section-item ul {
+    padding-left: 20px;
+}
+
+.resume-content .section-item ul li {
+    margin-bottom: 5px;
+}
+
+/* Footer styling */
 .resume-footer {
     text-align: center;
     padding: 10px;
-    background-color: #f8f9fa;
+    background-color: #002855; /* Navy blue for footer */
     margin-top: 20px;
+    color: #fdf6e3; /* Cream text */
+    border-top: 3px solid #001d3d; /* Darker navy accent */
 }
 
-
+/* Home icon canvas styling */
 #homeCanvas {
-    position: absolute;
+    position: fixed;
     top: 10px;
     left: 10px;
     cursor: pointer;
     z-index: 1000;
+    
 }
