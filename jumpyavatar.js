@@ -53,6 +53,8 @@ animate();
 
 // Add click event to navigate to the home page
 canvas.addEventListener('click', () => {
-    console.log('Canvas clicked!'); 
-    window.location.href = '/index.html'; // Redirect
+    console.log('Canvas clicked!');
+    //window.location.href = '/index.html';
+    //const resumeOverlay = document.getElementById('resumeOverlay');
+    document.getElementById('resumeOverlay').style.display = 'none';
 });
