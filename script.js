@@ -2,6 +2,7 @@ var user;
 const gridSize = 50; // Define the grid size
 var moveDistance = gridSize; // Move one grid square at a time
 var lastDirection = null; // Keep track of the last movement direction
+let isOverlayOpen = false; // Tracks whether the iframe is open
 /*
 signs = [];
 signs.push(new signs(100, 0, 150, 100, false));
@@ -78,7 +79,7 @@ function avatar(width, height, color, xpos, ypos) {
         this.ypos += this.speedY;
 
         // Ensure the avatar stays within the canvas boundaries
-        this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width  - (this.width + 15)));
+        this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width - (this.width + 15)));
         this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 15)));
 
         this.xpos = Math.round(this.xpos / gridSize) * gridSize;
@@ -88,6 +89,13 @@ function avatar(width, height, color, xpos, ypos) {
 
 //Avatar movement based on key press
 function avatarMovement(keyCode) {
+
+    if (isOverlayOpen) {
+        console.log('Avatar movement disabled while overlay is open.');
+        return; // Prevent movement if the overlay is open
+    }
+
+
     user.speedX = 0;
     user.speedY = 0;
     var moveDistance = gridSize; // Move one grid square at a time
@@ -103,39 +111,39 @@ function avatarMovement(keyCode) {
     if ((gameMap.keys[upArrow] || gameMap.keys[wKey]) && user.ypos >= 50) { canMove = true; directions.push('up'); } // Move up
     if ((gameMap.keys[downArrow] || gameMap.keys[sKey]) && user.ypos + user.height <= gameMap.canvas.height - 50) { canMove = true; directions.push('down'); } // Move down
 
-    if (canMove === false) {directions = null; directions.push('none');}
-    
+    if (canMove === false) { directions = null; directions.push('none'); }
 
-if (directions.length > 1) {
-    if (lastDirection === directions[0]) {
-        lastDirection = directions[1];
-    } else {
+
+    if (directions.length > 1) {
+        if (lastDirection === directions[0]) {
+            lastDirection = directions[1];
+        } else {
+            lastDirection = directions[0];
+        }
+    } else if (directions.length === 1) {
         lastDirection = directions[0];
     }
-} else if (directions.length === 1) {
-    lastDirection = directions[0];
-}
 
-switch (lastDirection) { //uses switch cases to allow for multi-directional movement
-    case 'left':
-        user.speedX = -moveDistance;
-        break;
-    case 'right':
-        user.speedX = moveDistance;
-        break;
-    case 'up':
-        user.speedY = -moveDistance;
-        break;
-    case 'down':
-        user.speedY = moveDistance;
-        break;
-    case null:
-        user.speedX = 0;
-        user.speedY = 0;
-        break;
-}
+    switch (lastDirection) { //uses switch cases to allow for multi-directional movement
+        case 'left':
+            user.speedX = -moveDistance;
+            break;
+        case 'right':
+            user.speedX = moveDistance;
+            break;
+        case 'up':
+            user.speedY = -moveDistance;
+            break;
+        case 'down':
+            user.speedY = moveDistance;
+            break;
+        case null:
+            user.speedX = 0;
+            user.speedY = 0;
+            break;
+    }
 
-user.newPos();
+    user.newPos();
 }
 
 function signs(width, height, xpos, ypos, interacted) {
@@ -155,12 +163,51 @@ function signs(width, height, xpos, ypos, interacted) {
 function updateMap() {
     gameMap.clear();
     user.update();
+
 }
+
+window.addEventListener('resize', () => {
+    console.log('Window resized. Updating canvas dimensions.');
+    gameMap.canvas.width = window.innerWidth;
+    gameMap.canvas.height = window.innerHeight;
+});
+
+function openResume() {
+    console.log('Open resume clicked!');
+    document.getElementById('resumeOverlay').style.display = 'block';
+
+    // Show the homeButton div (which contains both canvases)
+    const homeButton = document.getElementById('homeButton');
+    homeButton.style.display = 'block';
+
+    isOverlayOpen = true; // Set the flag to true
+}
+
+function closeResume() {
+    console.log('Close resume clicked!');
+    document.getElementById('resumeOverlay').style.display = 'none';
+
+    // Hide the homeButton div (which contains both canvases)
+    const homeButton = document.getElementById('homeButton');
+    homeButton.style.display = 'none';
+
+    isOverlayOpen = false; // Set the flag to false
+}
+document.addEventListener('click', (event) => {
+    console.log('Clicked element:', event.target);
+});
+
+// Add event listener to homeCanvas to close the resume overlay
+document.getElementById('homeCanvas').addEventListener('click', () => {
+    closeResume();
+});
+
+
+
 
 // Open the resume overlay
 document.getElementById('openResume').addEventListener('click', () => {
-    console.log('Open resume clicked!');
-    document.getElementById('resumeOverlay').style.display = 'block';
+    openResume();
 });
 
-//add resume closing code from resume.html / jumpyavatar.js
+

@@ -6,20 +6,21 @@ body {
 canvas {
     border: 0;
     background-image: url("map.png");
-
+    z-index: 100;
     background-position: left top;
     position: fixed;
 }
 
 #resumeOverlay {
     position: fixed;
+    pointer-events: none;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
     display: none; /* Hidden by default */
-    z-index: 10000; /* Ensure it appears above other elements */
+    z-index: 600; /* Ensure it appears above other elements */
 }
 
 #resumeIframe {
@@ -38,15 +39,42 @@ canvas {
     font-size: 20px;
     color: white;
     cursor: pointer;
-    z-index: 100;
+    z-index: 500;
 }
 
 #resumeButton {
     position: relative; 
-    z-index: 1100; 
+    justify-self: center;
+    z-index: 400; 
     color: #fdf6e3; 
-    padding: 10px 20px;
+    padding: none;
     border: none;
     cursor: pointer;
     font-size: 16px;
+}
+#homeButton {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Hidden by default */
+    z-index: 700; /* Ensure it appears above other elements */
+}
+
+/* Specific styles for homeCanvas */
+#homeCanvas {
+    pointer-events: auto; /* Allow pointer events */
+    top: 10px;
+    left: 10px;
+    background: rgba(198, 85, 85, 0);
+    z-index: 800; /* Higher than minicanvas */
+}
+
+/* Specific styles for minicanvas */
+#minicanvas {
+    pointer-events: none;
+    top: 10px; /* Adjust position to avoid overlap */
+    left: 10px;
+    z-index: 700; /* Lower than homeCanvas */
 }

@@ -8,7 +8,6 @@
     <title>JS Practice</title>
     <link href="style.css" rel="stylesheet">
     <script src="script.js" defer></script>
-    <script src="jumpyavatar.js" defer></script>
 
 </head>
 <!--Starts the js game to start its initilizing function-->
@@ -17,10 +16,15 @@
     <div id="resumeButton">
         <button id="openResume">Open Resume</button>
     </div>
+    
     <!-- Iframe overlay -->
     <div id="resumeOverlay">
-        
         <iframe id="resumeIframe" src="resume.html"></iframe>
+        
     </div>
-
+        <div id="homeButton">
+            <script src="jumpyavatar.js" type="module"></script>
+            <canvas id="homeCanvas" class="canvas" width="50" height="50"></canvas>
+            <canvas id="minicanvas" class="canvas" width="50" height="50"></canvas>
+        </div>
 </body>
