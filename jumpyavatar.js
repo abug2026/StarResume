@@ -1,7 +1,6 @@
 // Create a canvas element and append it to the document
 const minicanvas = document.createElement('canvas');
 minicanvas.id = 'minicanvas'; // Assign an ID for styling
-minicanvas.classList.add('canvas'); // Add shared class for styling
 minicanvas.width = 50;
 minicanvas.height = 50;
 homeButton.appendChild(minicanvas);

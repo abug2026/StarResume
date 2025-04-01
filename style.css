@@ -11,22 +11,26 @@ canvas {
     position: fixed;
 }
 
+/* Iframe overlay setup*/
 #resumeOverlay {
     position: fixed;
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
-    display: none; /* Hidden by default */
-    z-index: 600; /* Ensure it appears above other elements */
+    pointer-events: auto;
+    top: 30px;
+    left: 75px;
+    width: 90%;
+    height: 90%;
+    border: none;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    display: none; 
+    z-index: 800; /* Ensure it appears above other elements */
 }
 
+/* Iframe contents itself */
 #resumeIframe {
-    width: 80%;
-    height: 80%;
-    margin: 5% auto;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    margin: 0%;
     display: block;
     border: none;
     background: white;
@@ -53,6 +57,7 @@ canvas {
     font-size: 16px;
 }
 #homeButton {
+    background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
     position: fixed;
     top: 0;
     left: 0;
@@ -74,6 +79,7 @@ canvas {
 /* Specific styles for minicanvas */
 #minicanvas {
     pointer-events: none;
+    background: #fdf6e3;
     top: 10px; /* Adjust position to avoid overlap */
     left: 10px;
     z-index: 700; /* Lower than homeCanvas */
