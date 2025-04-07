@@ -5,6 +5,7 @@ var moveDistance = gridSize; // Move one grid square at a time
 var lastDirection = null; // Keep track of the last movement direction
 var signs = []; // Array to hold sign objects
 var isOverlayOpen = false; // Flag to track if the overlay is open
+var index; // Variable to store the index of the sign that was clicked
 
 //Arrow key codes
 const upArrow = 38;
@@ -44,13 +45,25 @@ var gameMap = {
             gameMap.keys[i] = false;
         }
 
-        window.addEventListener('keydown', function (e) { //If a key is down, its array value is set to true
+        const movementKeys = [upArrow, downArrow, leftArrow, rightArrow, wKey, aKey, sKey, dKey];
+
+        window.addEventListener('keydown', function (e) {
+            // Check if the pressed key is not a movement key
+            if (!movementKeys.includes(e.keyCode)) {
+                console.log('Non-movement key pressed. Resetting direction.');
+                lastDirection = null;
+                user.speedX = 0;
+                user.speedY = 0;
+            }
+    
+            // If a movement key is pressed, update the movement
             gameMap.keys[e.keyCode] = true;
             avatarMovement(e.keyCode);
-        })
-        window.addEventListener('keyup', function (e) { //If a key is up then its array value is set to false
+        });
+    
+        window.addEventListener('keyup', function (e) {
             gameMap.keys[e.keyCode] = false;
-        })
+        });
     },
 
     clear: function () { //Clears the map, used to ensure the moving objects appear to move rather than get smeared across the page
@@ -89,7 +102,8 @@ function avatar(width, height, color, xpos, ypos) {
             signs[i].interact(user);
             if (signs[i].interacted) {
                 console.log("Interacted with sign at index " + i);
-                signs[i].openPage();
+                index = i; // Store the index of the sign that was clicked
+                signs[i].openPage(i);
             }
         }
     }
@@ -137,9 +151,7 @@ function avatarMovement(keyCode) {
         directions.push('none');
     }
 
-    if(gameMap.anyKeysPressed() && (directions[0] === 'null')) {
-        lastDirection = null; // Reset lastDirection if any key is pressed
-    }
+    
 
 
     if (directions.length > 1) {
@@ -199,10 +211,10 @@ function sign(width, height, xpos, ypos, interacted, page) {
 
     }
 
-    this.openPage = function () {
-        console.log("openPage called for sign at " + this.xpos + ", " + this.ypos);
+    this.openPage = function (index) {
         if (gameMap.keys[space]) {
-            openResume();
+            console.log("openPage called for sign at " + this.xpos + ", " + this.ypos + " | index: " + index);
+            openResume(index);
         }
     };
 }
@@ -229,10 +241,13 @@ window.addEventListener('resize', () => {
 
 
 //Handles all iframe code
-function openResume() {
+function openResume(index) {
     console.log('Open resume clicked!');
-    document.getElementById('resumeOverlay').style.display = 'block';
-
+    if (index === 0) {
+        document.getElementById('resumeOverlay').style.display = 'block';
+    } else if( index === 1) {
+        document.getElementById('aboutOverlay').style.display = 'block';
+    }
     // Show the homeButton div (which contains both canvases)
     const homeButton = document.getElementById('homeButton');
     homeButton.style.display = 'block';
@@ -240,23 +255,27 @@ function openResume() {
     isOverlayOpen = true; // Set the flag to true
 }
 
-function closeResume() {
+function closeResume(index) {
     console.log('Close resume clicked!');
-    document.getElementById('resumeOverlay').style.display = 'none';
-
+    if (index === 0) {
+        document.getElementById('resumeOverlay').style.display = 'none';
+    } else if( index === 1) {
+        document.getElementById('aboutOverlay').style.display = 'none';
+    }
     // Hide the homeButton div (which contains both canvases)
     const homeButton = document.getElementById('homeButton');
     homeButton.style.display = 'none';
 
     isOverlayOpen = false; // Set the flag to false
 }
+
 document.addEventListener('click', (event) => {
     console.log('Clicked element:', event.target);
 });
 
 // Add event listener to homeCanvas to close the resume overlay
 document.getElementById('homeCanvas').addEventListener('click', () => {
-    closeResume();
+    closeResume(index);
 });
 
 
