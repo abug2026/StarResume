@@ -98,7 +98,8 @@ function avatar(width, height, color, xpos, ypos) {
 
         //checks if user overlaps with any signs
         for (var i = 0; i < signs.length; i++) {
-            console.log("Checking interaction with sign at index " + i + ": " + signs[i].xpos + signs[i].ypos + " | " + user.xpos + ", " + user.ypos);
+            console.log("Checking interaction with sign at index " + i + ": " 
+                + signs[i].xpos + signs[i].ypos + " | " + user.xpos + ", " + user.ypos);
             signs[i].interact(user);
             if (signs[i].interacted) {
                 console.log("Interacted with sign at index " + i);
@@ -201,7 +202,8 @@ function sign(width, height, xpos, ypos, interacted, page) {
     }
 
     this.interact = function (user) {
-        if (user.xpos >= this.xpos && user.ypos >= this.ypos && user.xpos <= this.xpos + this.width && user.ypos <= this.ypos + this.height) {
+        if (user.xpos >= this.xpos && user.ypos >= this.ypos 
+            && user.xpos <= this.xpos + this.width && user.ypos <= this.ypos + this.height) {
             console.log("interacted with sign!");
             this.interacted = true;
         } else {
@@ -214,7 +216,7 @@ function sign(width, height, xpos, ypos, interacted, page) {
     this.openPage = function (index) {
         if (gameMap.keys[space]) {
             console.log("openPage called for sign at " + this.xpos + ", " + this.ypos + " | index: " + index);
-            openResume(index);
+            openPage(index);
         }
     };
 }
@@ -241,8 +243,8 @@ window.addEventListener('resize', () => {
 
 
 //Handles all iframe code
-function openResume(index) {
-    console.log('Open resume clicked!');
+function openPage(index) {
+    console.log('Open page!');
     if (index === 0) {
         document.getElementById('resumeOverlay').style.display = 'block';
     } else if( index === 1) {
