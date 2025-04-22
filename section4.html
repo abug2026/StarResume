@@ -17,14 +17,36 @@
             width: 50%;
             height: auto;
         }
+        h1 {
+            position: fixed;
+            text-align: center;
+            
+        }
     </style>
 </head>
 <body>
     <h1>Section 4</h1>
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
+    <div id="imageContainer"></div>
+    <script>
+        // Use a relative path for the image folder
+        const imageFolder = '../portfolio/pictures/Flowers/';
+        const imageFilenames = [
+            'flower.JPG',
+            'IMG_2580.JPG',
+            'IMG_2947.JPG',
+            'IMG_3062.JPG',
+            'IMG_3068.JPG'
+        ];
+
+        const imageContainer = document.getElementById('imageContainer');
+
+        // Dynamically load all images from the list
+        imageFilenames.forEach(filename => {
+            const imgElement = document.createElement('img');
+            imgElement.src = `${imageFolder}${filename}`;
+            imgElement.alt = filename;
+            imageContainer.appendChild(imgElement);
+        });
+    </script>
 </body>
 </html>

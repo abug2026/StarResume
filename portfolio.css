@@ -1,0 +1,48 @@
+body {
+    height: 100vh;
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    scroll-behavior: smooth; /* Smooth scrolling */
+    display: flex;
+    flex-direction: row; /* Arrange content horizontally */
+}
+
+
+.container {
+    display: flex;
+    flex-direction: row; /* Align sections horizontally */
+    width: 100vw;
+    height: 95vh;
+    overflow-x: scroll; /* Enable horizontal scrolling for the container */
+    scroll-behavior: smooth;
+    scroll-snap-type: x; 
+    white-space: nowrap;
+}
+
+iframe {
+    flex: 0 0 50%; /* Each iframe takes half the width */
+    height: 80%;
+    margin-top: 60px;
+    scroll-snap-align: start;
+}
+
+.nav {
+    position: fixed;
+    top: 1px;
+    left: 10px;
+    z-index: 1000;
+}
+
+.nav a {
+    text-decoration: none;
+    color: white;
+    background-color: black;
+    padding: 10px 15px;
+    margin: 0px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.nav a:hover {
+    background-color: gray;
+}

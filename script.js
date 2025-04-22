@@ -28,6 +28,7 @@ function startGame() {
     user = new avatar(50, 50, "red", 550, 300);
     signs[0] = new sign(100, 100, 700, 250, false, 'openResume'); // Creates 
     signs[1] = new sign(50, 100, 0, 250, false, 'openAbout'); // Create a sign object and add it to the signs array
+    signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio'); // Create a sign object and add it to the signs array
 }
 
 //Defines the gameMap Canvas
@@ -249,6 +250,8 @@ function openPage(index) {
         document.getElementById('resumeOverlay').style.display = 'block';
     } else if( index === 1) {
         document.getElementById('aboutOverlay').style.display = 'block';
+    } else if (index === 2) {
+        window.location.href="./portfolio.html";
     }
     // Show the homeButton div (which contains both canvases)
     const homeButton = document.getElementById('homeButton');

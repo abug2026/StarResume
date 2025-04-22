@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Section 3</title>
+    <title>Portraits</title>
     <style>
         body {
             margin: 0;
@@ -17,14 +17,35 @@
             width: 50%; /* Adjust image width to fit the half-width sections */
             height: auto;
         }
+        h1 {
+            position: fixed;
+            text-align: center;
+            
+        }
     </style>
 </head>
 <body>
-    <h1>Section 3</h1>
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
-    <img src="flower.JPG" alt="Flower">
+    <h1>Portraits</h1>
+    <div id="imageContainer"></div>
+    <script>
+        // Use a relative path for the image folder
+        const imageFolder = '../portfolio/pictures/Portraits/';
+        const imageFilenames = [
+            'IMG_2028.JPG',
+            'IMG_2031.JPG',
+            'IMG_2043.JPG',
+            'sillouette-2.jpg'
+        ];
+
+        const imageContainer = document.getElementById('imageContainer');
+
+        // Dynamically load all images from the list
+        imageFilenames.forEach(filename => {
+            const imgElement = document.createElement('img');
+            imgElement.src = `${imageFolder}${filename}`;
+            imgElement.alt = filename;
+            imageContainer.appendChild(imgElement);
+        });
+    </script>
 </body>
 </html>
