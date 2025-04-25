@@ -91,8 +91,8 @@ function avatar(width, height, color, xpos, ypos) {
         this.ypos += this.speedY;
 
         // Ensure the avatar stays within the canvas boundaries
-        this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width - (this.width + 15)));
-        this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 15)));
+        this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width - (this.width + 10)));
+        this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 10)));
 
         this.xpos = Math.round(this.xpos / gridSize) * gridSize;
         this.ypos = Math.round(this.ypos / gridSize) * gridSize;

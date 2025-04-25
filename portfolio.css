@@ -5,8 +5,9 @@ body {
     scroll-behavior: smooth; /* Smooth scrolling */
     display: flex;
     flex-direction: row; /* Arrange content horizontally */
+    background-color: #fdf6e3; 
+    
 }
-
 
 .container {
     display: flex;
@@ -17,12 +18,14 @@ body {
     scroll-behavior: smooth;
     scroll-snap-type: x; 
     white-space: nowrap;
+
+    
 }
 
 iframe {
     flex: 0 0 50%; /* Each iframe takes half the width */
-    height: 80%;
-    margin-top: 60px;
+    height: 85%;
+    margin-top: 50px;
     scroll-snap-align: start;
 }
 
@@ -30,6 +33,7 @@ iframe {
     position: fixed;
     top: 1px;
     left: 10px;
+    bottom: 50px;
     z-index: 1000;
 }
 
@@ -45,4 +49,15 @@ iframe {
 
 .nav a:hover {
     background-color: gray;
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #002855; 
+    margin-top: 20px;
+    color: #ff0000; 
+    border-top: 3px solid #001d3d; 
+    z-index: 1000;
+    position: relative; /* Ensure it is positioned within the document flow */
 }

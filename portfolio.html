@@ -26,13 +26,17 @@
     <iframe src="section3.html" id="section3"></iframe>
     <iframe src="section4.html" id="section4"></iframe>
 
+    <div class="footer">
+        <h1>  Scroll -> </h1>
+    </div>
+
     <script>
         // Redirect any scrolling input to horizontal side scrolling
-        window.addEventListener('wheel',(event) => {
-                event.preventDefault(); // Prevent default scrolling behavior
-                const scrollAmount = event.deltaY || event.deltaX; // Use deltaY or deltaX for scrolling input
-                window.scrollBy({ left: scrollAmount }); // Apply scrolling to the horizontal axis
-            },
+        window.addEventListener('wheel', (event) => {
+            event.preventDefault(); // Prevent default scrolling behavior
+            const scrollAmount = event.deltaY || event.deltaX; // Use deltaY or deltaX for scrolling input
+            window.scrollBy({ left: scrollAmount }); // Apply scrolling to the horizontal axis
+        },
             { passive: false } // Explicitly set the listener to non-passive
         );
     </script>

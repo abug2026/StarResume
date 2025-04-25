@@ -98,3 +98,13 @@ canvas {
     left: 10px;
     z-index: 700; /* Lower than homeCanvas */
 }
+
+#title {
+    color: rgb(255, 0, 0);
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+    display: block;
+    padding: 10px;
+    z-index: 9000; /* Ensure it appears above other elements */
+}
