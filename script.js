@@ -26,9 +26,10 @@ const space = 32; // Space key code
 function startGame() {
     gameMap.start();
     user = new avatar(50, 50, "red", 550, 300);
-    signs[0] = new sign(100, 100, 700, 250, false, 'openResume'); // Creates 
-    signs[1] = new sign(50, 100, 0, 250, false, 'openAbout'); // Create a sign object and add it to the signs array
-    signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio'); // Create a sign object and add it to the signs array
+    signs[0] = new sign(100, 50, 150, 0, false, 'openResume'); //
+    signs[1] = new sign(50, 100, 0, 250, false, 'openAbout'); // 
+    signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio'); // 
+    signs[3] = new sign(100, 100, 700, 250, false, 'openHelp'); 
 }
 
 //Defines the gameMap Canvas
@@ -200,6 +201,9 @@ function sign(width, height, xpos, ypos, interacted, page) {
         ctx = gameMap.context;
         ctx.fillStyle = 'blue';
         ctx.fillRect(this.xpos, this.ypos, this.width + 50, this.height + 50);
+        ctx.fillStyle = 'white';
+        ctx.font = '20px Arial'; 
+        ctx.fillText(page, this.xpos + 10, this.ypos + 50);
     }
 
     this.interact = function (user) {
@@ -252,6 +256,8 @@ function openPage(index) {
         document.getElementById('aboutOverlay').style.display = 'block';
     } else if (index === 2) {
         window.location.href="./portfolio.html";
+    } else if (index === 3) {
+        document.getElementById('helpOverlay').style.display = 'block';;
     }
     // Show the homeButton div (which contains both canvases)
     const homeButton = document.getElementById('homeButton');
@@ -266,7 +272,10 @@ function closeResume(index) {
         document.getElementById('resumeOverlay').style.display = 'none';
     } else if( index === 1) {
         document.getElementById('aboutOverlay').style.display = 'none';
+    } else if( index === 3) {
+        document.getElementById('helpOverlay').style.display = 'none';
     }
+    
     // Hide the homeButton div (which contains both canvases)
     const homeButton = document.getElementById('homeButton');
     homeButton.style.display = 'none';

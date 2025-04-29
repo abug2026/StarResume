@@ -24,8 +24,8 @@ body {
 
 iframe {
     flex: 0 0 50%; /* Each iframe takes half the width */
-    height: 85%;
-    margin-top: 50px;
+    height: 88%;
+    margin-top: 30px;
     scroll-snap-align: start;
 }
 
@@ -52,12 +52,13 @@ iframe {
 }
 
 .footer {
-    text-align: center;
-    padding: 10px;
+    align-self: flex-end;
+    text-anchor: start;
+    padding: 0px;
+    margin-bottom: 10px;
     background-color: #002855; 
-    margin-top: 20px;
-    color: #ff0000; 
-    border-top: 3px solid #001d3d; 
+    margin-top: 0px;
+    color: #fdf6e3; 
     z-index: 1000;
-    position: relative; /* Ensure it is positioned within the document flow */
+    position: fixed; 
 }
