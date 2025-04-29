@@ -9,15 +9,19 @@ const ctx = minicanvas.getContext('2d');
 
 // Box properties
 let avatar = {
-    x: minicanvas.width / 2 - 10,
+    x: minicanvas.width / 2 - 15,
     y: minicanvas.height / 2 + 10,
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
     amplitude: 15, // Amplitude
     frequency: 0.05, // Frequency
-    color: '#e74c3c',
-    time: 0
+    time: 0,
+    image: "avatar.png"// Set the source to the avatar image
 };
+
+// Load the avatar image
+avatar.imageObj = new Image();
+avatar.imageObj.src = avatar.image; // Set the source to the avatar image
 
 // Animation function
 function animate() {
@@ -32,8 +36,8 @@ function animate() {
     // Calculate the new vertical position using a sine function
     avatar.y = minicanvas.height / 2 + avatar.amplitude * Math.sin(avatar.time);
 
-    ctx.fillStyle = avatar.color;
-    ctx.fillRect(avatar.x, avatar.y, avatar.width, avatar.height);
+    // Draw the avatar image
+    ctx.drawImage(avatar.imageObj, avatar.x, avatar.y, avatar.width, avatar.height);
 
     // Increment the time variable to progress the sine wave
     avatar.time += avatar.frequency;

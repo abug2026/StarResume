@@ -25,7 +25,7 @@ const space = 32; // Space key code
 //Initializes the game
 function startGame() {
     gameMap.start();
-    user = new avatar(50, 50, "red", 550, 300);
+    user = new avatar(50, 50, 550, 300);
     signs[0] = new sign(100, 50, 150, 0, false, 'openResume'); //
     signs[1] = new sign(50, 100, 0, 250, false, 'openAbout'); // 
     signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio'); // 
@@ -74,7 +74,7 @@ var gameMap = {
 }
 
 // Function that creates the avatar and updates its coordinates
-function avatar(width, height, color, xpos, ypos) {
+function avatar(width, height, xpos, ypos) {
     this.gameMap = gameMap;
     this.width = width;
     this.height = height;
@@ -82,10 +82,12 @@ function avatar(width, height, color, xpos, ypos) {
     this.speedY = 0;
     this.xpos = xpos;
     this.ypos = ypos;
+    this.image = new Image(); // Create a new image object
+    this.image.src = "avatar.png"; // Set the source to the avatar image
+
     this.update = function () {
         ctx = gameMap.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.xpos, this.ypos, this.width, this.height);
+        ctx.drawImage(this.image, this.xpos, this.ypos, this.width, this.height); // Draw the image
     }
     this.newPos = function () {
         this.xpos += this.speedX;
@@ -199,9 +201,9 @@ function sign(width, height, xpos, ypos, interacted, page) {
     this.interacted = false;
     this.update = function () {
         ctx = gameMap.context;
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = '#fdf6e3';
         ctx.fillRect(this.xpos, this.ypos, this.width + 50, this.height + 50);
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = '#002855';
         ctx.font = '20px Arial'; 
         ctx.fillText(page, this.xpos + 10, this.ypos + 50);
     }
