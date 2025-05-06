@@ -4,6 +4,7 @@ const gridSize = 50; // Define the grid size
 var moveDistance = gridSize; // Move one grid square at a time
 var lastDirection = null; // Keep track of the last movement direction
 var signs = []; // Array to hold sign objects
+var stars = []; // Array to hold star objects
 var isOverlayOpen = false; // Flag to track if the overlay is open
 var index; // Variable to store the index of the sign that was clicked
 
@@ -29,7 +30,8 @@ function startGame() {
     signs[0] = new sign(100, 50, 150, 0, false, 'openResume'); //
     signs[1] = new sign(50, 100, 0, 250, false, 'openAbout'); // 
     signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio'); // 
-    signs[3] = new sign(100, 100, 700, 250, false, 'openHelp'); 
+    signs[3] = new sign(100, 100, 700, 250, false, 'openHelp');
+    
 }
 
 //Defines the gameMap Canvas
@@ -57,15 +59,17 @@ var gameMap = {
                 user.speedX = 0;
                 user.speedY = 0;
             }
-    
+
             // If a movement key is pressed, update the movement
             gameMap.keys[e.keyCode] = true;
             avatarMovement(e.keyCode);
         });
-    
+
         window.addEventListener('keyup', function (e) {
             gameMap.keys[e.keyCode] = false;
         });
+        
+        createStars(); // Create stars when the game starts
     },
 
     clear: function () { //Clears the map, used to ensure the moving objects appear to move rather than get smeared across the page
@@ -82,33 +86,62 @@ function avatar(width, height, xpos, ypos) {
     this.speedY = 0;
     this.xpos = xpos;
     this.ypos = ypos;
+    this.mood = 0; // 0 = neutral, 1 = happy, 2 = sad, 3 = angry
     this.image = new Image(); // Create a new image object
-    this.image.src = "avatar.png"; // Set the source to the avatar image
-
+    this.image.src = "avatar.png";
+    this.moodImage = function () {
+        console.log("Setting mood image to: " + this.mood);
+        if (this.mood === 0) {
+            this.image.src = "avatar.png"; // Neutral mood
+        } else if (this.mood === 1) {
+            this.image.src = "avatarHappy.png"; // Happy mood
+        } else if (this.mood === 2) {
+            this.image.src = "avatarSad.png"; // Sad mood
+        } else if (this.mood === 3) {
+            this.image.src = "avatarAngry.png"; // Angry mood
+        }
+    }
     this.update = function () {
         ctx = gameMap.context;
+        this.moodImage();
         ctx.drawImage(this.image, this.xpos, this.ypos, this.width, this.height); // Draw the image
+
     }
     this.newPos = function () {
+        this.mood = 0;
         this.xpos += this.speedX;
         this.ypos += this.speedY;
 
         // Ensure the avatar stays within the canvas boundaries
         this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width - (this.width + 10)));
         this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 10)));
+        if (this.xpos < 50 || this.xpos > gameMap.canvas.width - (this.width + 10) - 50 || this.ypos < 50 || this.ypos > gameMap.canvas.height - (this.height + 10) - 25) {
+            this.mood = 3; // Change mood to angry if out of bounds
+        }
 
         this.xpos = Math.round(this.xpos / gridSize) * gridSize;
         this.ypos = Math.round(this.ypos / gridSize) * gridSize;
 
         //checks if user overlaps with any signs
         for (var i = 0; i < signs.length; i++) {
-            console.log("Checking interaction with sign at index " + i + ": " 
+            console.log("Checking interaction with sign at index " + i + ": "
                 + signs[i].xpos + signs[i].ypos + " | " + user.xpos + ", " + user.ypos);
             signs[i].interact(user);
             if (signs[i].interacted) {
                 console.log("Interacted with sign at index " + i);
                 index = i; // Store the index of the sign that was clicked
+                this.mood = 1; // Change mood to happy
                 signs[i].openPage(i);
+            }
+
+        }
+
+        for (var i = 0; i < stars.length; i++) {
+            console.log("Checking to collect star at index " + i + ": "
+                + stars[i].xpos + stars[i].ypos + " | " + user.xpos + ", " + user.ypos);
+            stars[i].collect(user);
+            if (stars[i].collected) {
+                console.log("Collected with star at index " + i);
             }
         }
     }
@@ -133,7 +166,7 @@ function avatarMovement(keyCode) {
 
     var canMove = true;
 
-    
+
     // Move left
     if ((gameMap.keys[leftArrow] || gameMap.keys[aKey]) && user.xpos >= 50) {
         canMove = true; directions.push('left');
@@ -154,9 +187,8 @@ function avatarMovement(keyCode) {
     if (canMove === false) {
         directions = null;
         directions.push('none');
+        user.mood = 3; // Change mood to sad
     }
-
-    
 
 
     if (directions.length > 1) {
@@ -201,15 +233,15 @@ function sign(width, height, xpos, ypos, interacted, page) {
     this.interacted = false;
     this.update = function () {
         ctx = gameMap.context;
-        ctx.fillStyle = '#fdf6e3';
-        ctx.fillRect(this.xpos, this.ypos, this.width + 50, this.height + 50);
         ctx.fillStyle = '#002855';
-        ctx.font = '20px Arial'; 
+        ctx.fillRect(this.xpos, this.ypos, this.width + 50, this.height + 50);
+        ctx.fillStyle = '#fdf6e3';
+        ctx.font = '20px Arial';
         ctx.fillText(page, this.xpos + 10, this.ypos + 50);
     }
 
     this.interact = function (user) {
-        if (user.xpos >= this.xpos && user.ypos >= this.ypos 
+        if (user.xpos >= this.xpos && user.ypos >= this.ypos
             && user.xpos <= this.xpos + this.width && user.ypos <= this.ypos + this.height) {
             console.log("interacted with sign!");
             this.interacted = true;
@@ -228,6 +260,43 @@ function sign(width, height, xpos, ypos, interacted, page) {
     };
 }
 
+function star(xpos, ypos, collected) {
+    this.gameMap = gameMap;
+    this.xpos = xpos;
+    this.ypos = ypos;
+    this.collected = false;
+    this.update = function () {
+        ctx = gameMap.context;
+        ctx.fillStyle = '#FFD700'; // Gold color
+        ctx.beginPath();
+        ctx.lineWidth = 200; // Set line width
+        ctx.arc(this.xpos, this.ypos, 10, 0, Math.PI * 2); // Draw a circle for the star
+        ctx.fill();
+    }
+    this.collect = function (user) {
+        if (user.xpos >= this.xpos - 50 && user.ypos >= this.ypos - 50
+            && user.xpos <= this.xpos + 50 && user.ypos <= this.ypos + 50) {
+            console.log("interacted with star!");
+            this.collected = true;
+            this.xpos = user.xpos; // Move the star to the user's position
+            this.ypos = user.ypos; // Move the star to the user's position
+        } else {
+            console.log("no star detected");
+            this.collected = false;
+        }
+
+    }
+}
+
+function createStars() {
+    for (var i = 0; i < 10; i++) { // Create 10 stars   
+        var xpos = Math.floor(Math.random() * (gameMap.canvas.width - 50)) + 50; // Random x position
+        var ypos = Math.floor(Math.random() * (gameMap.canvas.height - 50)) + 50; // Random y position
+        stars[i] = new star(xpos, ypos, false); // Create a new star object
+        stars[i].update(); // Update the star's position
+    }
+}
+
 
 //Clears map then updates avatar locations as defined
 function updateMap() {
@@ -235,6 +304,9 @@ function updateMap() {
 
     for (var i = 0; i < signs.length; i++) {
         signs[i].update();
+    }
+    for(var i = 0; i < stars.length; i++) {     
+        stars[i].update();
     }
 
     user.update();
@@ -254,10 +326,10 @@ function openPage(index) {
     console.log('Open page!');
     if (index === 0) {
         document.getElementById('resumeOverlay').style.display = 'block';
-    } else if( index === 1) {
+    } else if (index === 1) {
         document.getElementById('aboutOverlay').style.display = 'block';
     } else if (index === 2) {
-        window.location.href="./portfolio.html";
+        window.location.href = "./portfolio.html";
     } else if (index === 3) {
         document.getElementById('helpOverlay').style.display = 'block';;
     }
@@ -272,12 +344,12 @@ function closeResume(index) {
     console.log('Close resume clicked!');
     if (index === 0) {
         document.getElementById('resumeOverlay').style.display = 'none';
-    } else if( index === 1) {
+    } else if (index === 1) {
         document.getElementById('aboutOverlay').style.display = 'none';
-    } else if( index === 3) {
+    } else if (index === 3) {
         document.getElementById('helpOverlay').style.display = 'none';
     }
-    
+
     // Hide the homeButton div (which contains both canvases)
     const homeButton = document.getElementById('homeButton');
     homeButton.style.display = 'none';
@@ -294,5 +366,11 @@ document.getElementById('homeCanvas').addEventListener('click', () => {
     closeResume(index);
 });
 
+//add event listener so esc key closes the overlay
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        closeResume(index);
+    }
+});
 
 

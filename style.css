@@ -8,7 +8,7 @@ body {
 
 canvas {
     border: 0;
-    background-image: url("map.png");
+    background-color: #fdf6e3;
     z-index: 100;
     background-position: left top;
     position: fixed;
@@ -111,7 +111,7 @@ canvas {
     margin: 5px;
     padding: 10px;
     display: flex;
-    z-index: 600; /* Ensure it appears above other elements */
+    z-index: 500; /* Ensure it appears above other elements */
 }
 
 #footer {
@@ -123,5 +123,5 @@ canvas {
     margin: 10px;
     display: flex;
     align-items: end;
-    z-index: 600; /* Ensure it appears above other elements */
+    z-index: 500; /* Ensure it appears above other elements */
 }
