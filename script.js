@@ -5,8 +5,15 @@ var moveDistance = gridSize; // Move one grid square at a time
 var lastDirection = null; // Keep track of the last movement direction
 var signs = []; // Array to hold sign objects
 var stars = []; // Array to hold star objects
+var inventory = []; // Array to hold inventory items
 var isOverlayOpen = false; // Flag to track if the overlay is open
-var index; // Variable to store the index of the sign that was clicked
+var index;
+var collectedNum = 0;
+var deposited = 0;
+var avatars = []; // Array to hold avatar objects
+var starImg = new Image(); // Create a new image object for the star
+starImg.src = "star.png"; // Set the source of the image
+
 
 //Arrow key codes
 const upArrow = 38;
@@ -27,11 +34,12 @@ const space = 32; // Space key code
 function startGame() {
     gameMap.start();
     user = new avatar(50, 50, 550, 300);
-    signs[0] = new sign(100, 50, 150, 0, false, 'openResume'); //
-    signs[1] = new sign(50, 100, 0, 250, false, 'openAbout'); // 
-    signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio'); // 
+    signs[0] = new sign(100, 50, 150, 0, false, 'openResume');
+    signs[1] = new sign(50, 100, 0, 250, false, 'openAbout');
+    signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio');
     signs[3] = new sign(100, 100, 700, 250, false, 'openHelp');
-    
+    signs[4] = new sign(100, 100, 1300, 0, false, 'depositStars');
+
 }
 
 //Defines the gameMap Canvas
@@ -68,7 +76,7 @@ var gameMap = {
         window.addEventListener('keyup', function (e) {
             gameMap.keys[e.keyCode] = false;
         });
-        
+
         createStars(); // Create stars when the game starts
     },
 
@@ -88,17 +96,24 @@ function avatar(width, height, xpos, ypos) {
     this.ypos = ypos;
     this.mood = 0; // 0 = neutral, 1 = happy, 2 = sad, 3 = angry
     this.image = new Image(); // Create a new image object
-    this.image.src = "avatar.png";
+    this.image.src = "avatar0.png";
+
+    //need to test
+    for (var i = 0; i < 4; i++) {
+        avatars[i] = new Image(); // Create a new image object
+        avatars[i].src = "avatar" + i + ".png"; // Set the source of the image
+    }
+
     this.moodImage = function () {
         console.log("Setting mood image to: " + this.mood);
         if (this.mood === 0) {
-            this.image.src = "avatar.png"; // Neutral mood
+            this.image.src = avatars[0].src; // Neutral mood
         } else if (this.mood === 1) {
-            this.image.src = "avatarHappy.png"; // Happy mood
+            this.image.src = avatars[1].src; // happy mood
         } else if (this.mood === 2) {
-            this.image.src = "avatarSad.png"; // Sad mood
+            //this.image.src = avatars[2].src; // sad mood
         } else if (this.mood === 3) {
-            this.image.src = "avatarAngry.png"; // Angry mood
+            this.image.src = avatars[3].src; // mad mood
         }
     }
     this.update = function () {
@@ -140,9 +155,7 @@ function avatar(width, height, xpos, ypos) {
             console.log("Checking to collect star at index " + i + ": "
                 + stars[i].xpos + stars[i].ypos + " | " + user.xpos + ", " + user.ypos);
             stars[i].collect(user);
-            if (stars[i].collected) {
-                console.log("Collected with star at index " + i);
-            }
+
         }
     }
 }
@@ -260,26 +273,37 @@ function sign(width, height, xpos, ypos, interacted, page) {
     };
 }
 
+//defines the star object
 function star(xpos, ypos, collected) {
     this.gameMap = gameMap;
     this.xpos = xpos;
     this.ypos = ypos;
     this.collected = false;
-    this.update = function () {
+    this.index = 0;
+    this.update = function () { 
+        if (this.collected) {
+            this.xpos = ((user.xpos + 10) + Math.cos(this.index / 2.5 * Math.PI) * 30); // Move the star to the user's position
+            this.ypos = ((user.ypos + 10) + Math.sin(this.index / 2.5 * Math.PI) * 30); // Move the star to the user's position
+        }
         ctx = gameMap.context;
-        ctx.fillStyle = '#FFD700'; // Gold color
-        ctx.beginPath();
-        ctx.lineWidth = 200; // Set line width
-        ctx.arc(this.xpos, this.ypos, 10, 0, Math.PI * 2); // Draw a circle for the star
-        ctx.fill();
+        ctx.drawImage(starImg, this.xpos, this.ypos, 25, 25); // Use starImg here
     }
     this.collect = function (user) {
-        if (user.xpos >= this.xpos - 50 && user.ypos >= this.ypos - 50
+        if (collectedNum > 4) {
+            console.log("You have collected too many stars!"); // Limit the number of stars that can be collected
+        }
+        else if (user.xpos >= this.xpos - 50 && user.ypos >= this.ypos - 50
             && user.xpos <= this.xpos + 50 && user.ypos <= this.ypos + 50) {
             console.log("interacted with star!");
+            inventory.push(this); // Add the star to the inventory
+            stars.splice(stars.indexOf(this), 1); // Remove the star from the array
+            console.log("Star collected! Inventory size: " + inventory.length);
+            console.log("Star collected! Stars left: " + stars.length);
             this.collected = true;
             this.xpos = user.xpos; // Move the star to the user's position
             this.ypos = user.ypos; // Move the star to the user's position
+            collectedNum++;
+            this.index = collectedNum; // Set the index of the star
         } else {
             console.log("no star detected");
             this.collected = false;
@@ -288,27 +312,44 @@ function star(xpos, ypos, collected) {
     }
 }
 
+//creates the initial stars on the map
 function createStars() {
     for (var i = 0; i < 10; i++) { // Create 10 stars   
         var xpos = Math.floor(Math.random() * (gameMap.canvas.width - 50)) + 50; // Random x position
         var ypos = Math.floor(Math.random() * (gameMap.canvas.height - 50)) + 50; // Random y position
         stars[i] = new star(xpos, ypos, false); // Create a new star object
         stars[i].update(); // Update the star's position
+        stars[i].index = i; // Set the index of the star
     }
+}
+
+function depositStars() {
+    deposited += inventory.length; // Increment the deposited count by the number of stars in the inventory
+    inventory = []; // Clear the inventory
+    collectedNum = 0; // Reset the collected number
+    console.log("Star deposited! Inventory size: " + inventory.length);
+    console.log("Star deposited! Stars left: " + stars.length);
+    console.log("Star deposited! Stars deposited: " + deposited);
+    updateMap();
 }
 
 
 //Clears map then updates avatar locations as defined
 function updateMap() {
     gameMap.clear();
-
+    ctx = gameMap.context;
     for (var i = 0; i < signs.length; i++) {
         signs[i].update();
     }
-    for(var i = 0; i < stars.length; i++) {     
+    for (var i = 0; i < stars.length; i++) {
         stars[i].update();
     }
-
+    for (var i = 0; i < inventory.length; i++) {
+        inventory[i].update(); // Update the star's position
+    }
+    for (var i = 0; i < deposited; i++) {
+        ctx.drawImage(starImg, 1325 + 25 * (i % 4), 75 + (Math.floor(i / 4) * 25), 25, 25); // Use starImg here
+    }
     user.update();
 
 }
@@ -333,11 +374,16 @@ function openPage(index) {
     } else if (index === 3) {
         document.getElementById('helpOverlay').style.display = 'block';;
     }
-    // Show the homeButton div (which contains both canvases)
-    const homeButton = document.getElementById('homeButton');
-    homeButton.style.display = 'block';
 
-    isOverlayOpen = true; // Set the flag to true
+    if (index === 4) {
+        depositStars();
+    } else {
+        // Show the homeButton div (which contains both canvases)
+        const homeButton = document.getElementById('homeButton');
+        homeButton.style.display = 'block';
+
+        isOverlayOpen = true; // Set the flag to true
+    }
 }
 
 function closeResume(index) {
