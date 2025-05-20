@@ -34,6 +34,7 @@ const space = 32; // Space key code
 function startGame() {
     gameMap.start();
     user = new avatar(50, 50, 550, 300);
+    //user.image.onload(1);
     signs[0] = new sign(100, 50, 150, 0, false, 'openResume');
     signs[1] = new sign(50, 100, 0, 250, false, 'openAbout');
     signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio');
@@ -99,11 +100,12 @@ function avatar(width, height, xpos, ypos) {
     this.image.src = "avatar0.png";
 
     //need to test
-    for (var i = 0; i < 4; i++) {
-        avatars[i] = new Image(); // Create a new image object
-        avatars[i].src = "avatar" + i + ".png"; // Set the source of the image
+    this.image.onload = function (instance) {
+        for (var i = 0; i < 4; i++) {
+            avatars[i] = new Image(); // Create a new image object
+            avatars[i].src = "avatar" + (i ) + ".png"; // Set the source of the image + (instance * 3)
+        }
     }
-
     this.moodImage = function () {
         console.log("Setting mood image to: " + this.mood);
         if (this.mood === 0) {
@@ -111,9 +113,7 @@ function avatar(width, height, xpos, ypos) {
         } else if (this.mood === 1) {
             this.image.src = avatars[1].src; // happy mood
         } else if (this.mood === 2) {
-            //this.image.src = avatars[2].src; // sad mood
-        } else if (this.mood === 3) {
-            this.image.src = avatars[3].src; // mad mood
+            this.image.src = avatars[2].src; // mad mood
         }
     }
     this.update = function () {
@@ -280,7 +280,7 @@ function star(xpos, ypos, collected) {
     this.ypos = ypos;
     this.collected = false;
     this.index = 0;
-    this.update = function () { 
+    this.update = function () {
         if (this.collected) {
             this.xpos = ((user.xpos + 10) + Math.cos(this.index / 2.5 * Math.PI) * 30); // Move the star to the user's position
             this.ypos = ((user.ypos + 10) + Math.sin(this.index / 2.5 * Math.PI) * 30); // Move the star to the user's position
