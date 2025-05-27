@@ -16,7 +16,7 @@ let avatar = {
     amplitude: 15, // Amplitude
     frequency: 0.05, // Frequency
     time: 0,
-    image: "avatar.png"// Set the source to the avatar image
+    image: "avatar0.png"// Set the source to the avatar image
 };
 
 // Load the avatar image

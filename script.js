@@ -10,7 +10,7 @@ var isOverlayOpen = false; // Flag to track if the overlay is open
 var index;
 var collectedNum = 0;
 var deposited = 0;
-var avatars = []; // Array to hold avatar objects
+var avatars = [];
 var starImg = new Image(); // Create a new image object for the star
 starImg.src = "star.png"; // Set the source of the image
 
@@ -26,15 +26,14 @@ const wKey = 87;
 const sKey = 83;
 const aKey = 65;
 const dKey = 68;
-
 const space = 32; // Space key code
 
 
 //Initializes the game
 function startGame() {
     gameMap.start();
+    imageLoader(0); // Load the first set of avatar images
     user = new avatar(50, 50, 550, 300);
-    //user.image.onload(1);
     signs[0] = new sign(100, 50, 150, 0, false, 'openResume');
     signs[1] = new sign(50, 100, 0, 250, false, 'openAbout');
     signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio');
@@ -43,7 +42,7 @@ function startGame() {
 
 }
 
-//Defines the gameMap Canvas
+//Defines the gameMap Canvas,
 var gameMap = {
     canvas: document.createElement("canvas"),
     start: function () {  // Activates upon calling start on the canvas object
@@ -95,29 +94,21 @@ function avatar(width, height, xpos, ypos) {
     this.speedY = 0;
     this.xpos = xpos;
     this.ypos = ypos;
-    this.mood = 0; // 0 = neutral, 1 = happy, 2 = sad, 3 = angry
-    this.image = new Image(); // Create a new image object
-    this.image.src = "avatar0.png";
+    this.mood = 0; // 1 = happy, 2 = sad, 3 = angry
+    this.multiplier = 0;
+    this.image = avatars[0]; // Start with neutral
 
-    //need to test
-    this.image.onload = function (instance) {
-        for (var i = 0; i < 4; i++) {
-            avatars[i] = new Image(); // Create a new image object
-            avatars[i].src = "avatar" + (i ) + ".png"; // Set the source of the image + (instance * 3)
-        }
-    }
     this.moodImage = function () {
-        console.log("Setting mood image to: " + this.mood);
-        if (this.mood === 0) {
-            this.image.src = avatars[0].src; // Neutral mood
-        } else if (this.mood === 1) {
-            this.image.src = avatars[1].src; // happy mood
-        } else if (this.mood === 2) {
-            this.image.src = avatars[2].src; // mad mood
+        var tempMood = (this.mood + (this.multiplier * 3));
+        console.log("Setting mood image to: " + tempMood);
+        if (this.mood >= 0 && this.mood < avatars.length) {
+            this.image = avatars[tempMood];
         }
+
     }
     this.update = function () {
         ctx = gameMap.context;
+        colorToggle();
         this.moodImage();
         ctx.drawImage(this.image, this.xpos, this.ypos, this.width, this.height); // Draw the image
 
@@ -131,7 +122,7 @@ function avatar(width, height, xpos, ypos) {
         this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width - (this.width + 10)));
         this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 10)));
         if (this.xpos < 50 || this.xpos > gameMap.canvas.width - (this.width + 10) - 50 || this.ypos < 50 || this.ypos > gameMap.canvas.height - (this.height + 10) - 25) {
-            this.mood = 3; // Change mood to angry if out of bounds
+            this.mood = 2; // Change mood to angry if out of bounds
         }
 
         this.xpos = Math.round(this.xpos / gridSize) * gridSize;
@@ -161,7 +152,7 @@ function avatar(width, height, xpos, ypos) {
 }
 
 //Avatar movement based on key press
-function avatarMovement(keyCode) {
+function avatarMovement() {
 
     if (isOverlayOpen) {
         console.log('Avatar movement disabled while overlay is open.');
@@ -200,7 +191,7 @@ function avatarMovement(keyCode) {
     if (canMove === false) {
         directions = null;
         directions.push('none');
-        user.mood = 3; // Change mood to sad
+        user.mood = 2; // Change mood to sad
     }
 
 
@@ -234,6 +225,34 @@ function avatarMovement(keyCode) {
             break;
     }
     user.newPos();
+}
+
+//loads the avatar images
+function imageLoader(inst) {
+    for (let i = inst * 3; i < inst * 3 + 3; i++) {
+        avatars[i] = new Image();
+        avatars[i].src = `avatar${i}.png`;
+    }
+    console.log("Loaded avatar images: " + inst);
+}
+
+function colorToggle() {
+    if (deposited > 4) {
+        document.addEventListener('keydown', (event) => {
+            if (event.key <= (deposited / 4) +1 && event.key > 0) {
+                if (event.key === '1') {
+                    user.multiplier = 0; // Reset multiplier to 0
+                } else if (event.key === '2') {
+                    user.multiplier = 1; // Set multiplier to 1
+                }
+                else if (event.key === '3') {
+                    user.multiplier = 2; // Set multiplier to 2
+                } else if (event.key === '4') {
+                    user.multiplier = 3; // Set multiplier to 3
+                }
+            }
+        });
+    }
 }
 
 function sign(width, height, xpos, ypos, interacted, page) {
@@ -314,7 +333,7 @@ function star(xpos, ypos, collected) {
 
 //creates the initial stars on the map
 function createStars() {
-    for (var i = 0; i < 10; i++) { // Create 10 stars   
+    for (var i = 0; i < 12; i++) { // Create 10 stars   
         var xpos = Math.floor(Math.random() * (gameMap.canvas.width - 50)) + 50; // Random x position
         var ypos = Math.floor(Math.random() * (gameMap.canvas.height - 50)) + 50; // Random y position
         stars[i] = new star(xpos, ypos, false); // Create a new star object
@@ -323,14 +342,22 @@ function createStars() {
     }
 }
 
+//loads new stars everytime the deposited stars is a greater multiple of 4
 function depositStars() {
     deposited += inventory.length; // Increment the deposited count by the number of stars in the inventory
+    if (inventory.length > 0 && (deposited / 4) >= user.multiplier) {
+        user.multiplier = Math.floor(deposited / 4); // Set the multiplier based on the deposited stars
+        imageLoader(Math.floor(deposited / 4)); // Load the second set of avatar images 
+        console.log("Loaded avatar images: " + (deposited / 4));
+
+    }
     inventory = []; // Clear the inventory
     collectedNum = 0; // Reset the collected number
     console.log("Star deposited! Inventory size: " + inventory.length);
     console.log("Star deposited! Stars left: " + stars.length);
     console.log("Star deposited! Stars deposited: " + deposited);
     updateMap();
+
 }
 
 
