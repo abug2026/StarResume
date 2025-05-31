@@ -35,7 +35,7 @@
         const mainbody = document.querySelector('.mainbody');
         window.addEventListener('wheel', (event) => {
             event.preventDefault(); // Prevent default scrolling behavior
-            const scrollAmount = event.deltaY || event.deltaX; // Use deltaY or deltaX for scrolling input
+            const scrollAmount = event.deltaY || event.deltaX; 
             if (mainbody) {
                 mainbody.scrollLeft += scrollAmount;
             }

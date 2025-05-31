@@ -435,7 +435,7 @@ function updateMap() {
     var starHeight = 15;
     for (var i = 0; i < deposited; i++) {
         if (i >= 8) {
-            starHeight = 35; // Adjust height for more than 4 stars
+            starHeight = 35; // Adjust height for more than 8 stars
         }
         ctx.drawImage(starImg, 1225 + 25 * (i % 4), starHeight 
         + (Math.floor(i / 4) * 25), 25, 25);
