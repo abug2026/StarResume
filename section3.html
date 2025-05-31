@@ -4,31 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portraits</title>
-    <link rel="stylesheet" href="sections.css">
+    <link rel="stylesheet" href="portfolio.css">
 
 </head>
 <body>
-    <h1>Portraits</h1>
-    <div id="imageContainer"></div>
-    <script>
-        // Use a relative path for the image folder
-        const imageFolder = '../portfolio/pictures/Portraits/';
-        const imageFilenames = [
-            'IMG_2028.JPG',
-            'IMG_2031.JPG',
-            'IMG_2043.JPG',
-            'sillouette-2.jpg'
-        ];
+    <div class="section-page">
+        <h1>Portraits</h1>
+        <div id="imageContainer"></div>
+        <script>
+            // Use a relative path for the image folder
+            const imageFolder = '../portfolio/pictures/Portraits/';
+            const imageFilenames = [
+                'IMG_2028.JPG',
+                'IMG_2031.JPG',
+                'IMG_2043.JPG',
+                'sillouette-2.jpg'
+            ];
 
-        const imageContainer = document.getElementById('imageContainer');
+            const imageContainer = document.getElementById('imageContainer');
 
-        // Dynamically load all images from the list
-        imageFilenames.forEach(filename => {
-            const imgElement = document.createElement('img');
-            imgElement.src = `${imageFolder}${filename}`;
-            imgElement.alt = "Portraits of myself";
-            imageContainer.appendChild(imgElement);
-        });
-    </script>
+            //Load all images from the list
+            imageFilenames.forEach(filename => {
+                const imgElement = document.createElement('img');
+                imgElement.src = `${imageFolder}${filename}`;
+                imgElement.alt = "Portraits of myself";
+                imageContainer.appendChild(imgElement);
+            });
+        </script>
+    </div>
 </body>
 </html>

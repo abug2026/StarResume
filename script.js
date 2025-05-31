@@ -34,8 +34,8 @@ function startGame() {
     imageLoader(0); // Load the first set of avatar images
     user = new avatar(50, 50, 550, 300);
     signs[0] = new sign(150, 150, 150, 0, false, 'openResume');
-    signs[1] = new sign(150, 150, 0, 250, false, 'openAbout');
-    signs[2] = new sign(150, 150, 1350, 250, false, 'openPortfolio');
+    signs[1] = new sign(150, 150, 0, 300, false, 'openAbout');
+    signs[2] = new sign(150, 150, 1400, 300, false, 'openPortfolio');
     signs[3] = new sign(150, 150, 700, 250, false, 'openHelp');
     signs[4] = new sign(150, 150, 1200, 0, false, 'Deposit Stars');
 
@@ -238,7 +238,7 @@ function avatarMovement() {
 function imageLoader(inst) {
     for (let i = inst * 3; i < inst * 3 + 3; i++) {
         avatars[i] = new Image();
-        avatars[i].src = `avatar${i}.png`;
+        avatars[i].src = `../avatars/avatar${i}.png`;
     }
     console.log("Loaded avatar images: " + inst);
 }

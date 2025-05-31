@@ -1,12 +1,15 @@
-body {
-    height: 100vh;
+.mainbody {
+    height: 95vh;
     overflow-x: auto; 
     overflow-y: hidden; 
     scroll-behavior: smooth; /* Smooth scrolling */
     display: flex;
     flex-direction: row; /* Arrange content horizontally */
     background-color: #fdf6e3; 
-    
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    color: #fdf6e3; 
 }
 
 .container {
@@ -24,20 +27,24 @@ body {
 
 iframe {
     flex: 0 0 50%; /* Each iframe takes half the width */
-    height: 88%;
-    margin-top: 30px;
+    height: 95%;
+    margin-top: 20px;
     scroll-snap-align: start;
-    padding: 5px;
     background-color: #ffffff; 
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-left: 5px solid #002855; 
+    font-family: Arial, sans-serif;
+    background-color: #002855;
+    color: #ffffff;
+    text-align: center;
+    color: #fdf6e3; 
 }
 
 .nav {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 2px;
+    left: 5px;
     width: 100%;
     z-index: 1000;
 }
@@ -60,10 +67,31 @@ iframe {
     align-self: flex-end;
     text-anchor: start;
     padding: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     background-color: #002855; 
-    margin-top: 0px;
+    margin-top: 10px;
     color: #fdf6e3; 
     z-index: 1000;
     position: fixed; 
+}
+
+/* --- Section styles from sections.css --- */
+.section-page {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #002855;
+    color: #fdf6e3;
+    text-align: center;
+    padding: 20px;
+}
+
+.section-page h1 {
+    text-align: center;
+    position: static;
+}
+
+.section-page img {
+    width: 50%;
+    height: auto;
+    margin: 10px 0;
 }

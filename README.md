@@ -1,3 +1,2 @@
 # ducksume
-
-Website resume themed around ducks! 
+Website-resume-star collecting game!

@@ -1,6 +1,14 @@
 const endScreen = document.getElementById('endScreen');
-
 const ctx = endScreen.getContext('2d');
+
+//star constants
+const stars = [];
+const STAR_COUNT = 30;
+
+//avatar constants
+const avatarImages = ["../avatars/avatar1.png", "../avatars/avatar4.png", "../avatars/avatar7.png", "../avatars/avatar10.png"];
+const avatars = [];
+const avatarSpacing = endScreen.width / (avatarImages.length + 1);
 
 // Avatar class
 function avatar(x, y, imageSrc) {
@@ -22,15 +30,24 @@ function star(x, y, speed, size) {
     this.y = y;
     this.speed = speed;
     this.size = size;
-    this.image = star.starImage;
+    this.image = new Image()
+    this.image.src = 'star.png';
 }
-star.starImage = new Image();
-star.starImage.src = 'star.png';
+
+
+// Setup stars
+function createStar() {
+    const x = Math.random() * endScreen.width;
+    const y = -30 - Math.random() * 100;
+    const speed = 2 + Math.random() * 3;
+    const size = 15 + Math.random() * 4;
+    return new star(x, y, speed, size);
+}
+for (let i = 0; i < STAR_COUNT; i++) {
+    stars.push(createStar());
+}
 
 // Setup avatars in the bottom half of the screen
-const avatarImages = ["avatar1.png", "avatar4.png", "avatar7.png", "avatar10.png"];
-const avatars = [];
-const avatarSpacing = endScreen.width / (avatarImages.length + 1);
 for (let i = 0; i < avatarImages.length; i++) {
     avatars.push(
         new avatar(
@@ -41,19 +58,6 @@ for (let i = 0; i < avatarImages.length; i++) {
     );
 }
 
-// Setup stars
-const stars = [];
-const STAR_COUNT = 30;
-function spawnStar() {
-    const x = Math.random() * endScreen.width;
-    const y = -30 - Math.random() * 100;
-    const speed = 2 + Math.random() * 3;
-    const size = 15 + Math.random() * 4;
-    return new star(x, y, speed, size);
-}
-for (let i = 0; i < STAR_COUNT; i++) {
-    stars.push(spawnStar());
-}
 
 // Animation function
 function animate() {
@@ -67,7 +71,7 @@ function animate() {
         star.y += star.speed;
         if (star.y > endScreen.height + 40) {
             // Respawn at top
-            stars[i] = spawnStar();
+            stars[i] = createStar();
         }
     }
 
@@ -79,7 +83,10 @@ function animate() {
         avatar.time += avatar.frequency;
     }
 
+    //ensures a smooth animation
     requestAnimationFrame(animate);
 }
+
+//run the animation
 animate();
 

@@ -4,33 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Light</title>
-    <link rel="stylesheet" href="sections.css">
+    <link rel="stylesheet" href="portfolio.css">
 
 </head>
 <body>
-    <h1>Light</h1>
-    <div id="imageContainer"></div>
-    <script>
-         // Use a relative path for the image folder
-         const imageFolder = '../portfolio/pictures/Light/';
-        const imageFilenames = [
-            'DSC04867.JPG',
-            'DSC04878.JPG',
-            'DSC04879.JPG',
-            'DSC04886.JPG',
-            'DSC04893.JPG',
-            'DSC04900.JPG'
-        ];
+    <div class="section-page">
+        <h1>Light</h1>
+        <div id="imageContainer"></div>
+        <script>
+             // Use a relative path for the image folder
+             const imageFolder = '../portfolio/pictures/Light/';
+            const imageFilenames = [
+                'DSC04867.JPG',
+                'DSC04878.JPG',
+                'DSC04879.JPG',
+                'DSC04886.JPG',
+                'DSC04893.JPG',
+                'DSC04900.JPG'
+            ];
 
-        const imageContainer = document.getElementById('imageContainer');
+            const imageContainer = document.getElementById('imageContainer');
 
-        // Dynamically load all images from the list
-        imageFilenames.forEach(filename => {
-            const imgElement = document.createElement('img');
-            imgElement.src = `${imageFolder}${filename}`;
-            imgElement.alt = "Pictures of ligting effects and an led pinlight";
-            imageContainer.appendChild(imgElement);
-        });
-    </script>
+            //Load all images from the list
+            imageFilenames.forEach(filename => {
+                const imgElement = document.createElement('img');
+                imgElement.src = `${imageFolder}${filename}`;
+                imgElement.alt = "Pictures of ligting effects and an led pinlight";
+                imageContainer.appendChild(imgElement);
+            });
+        </script>
+    </div>
 </body>
 </html>

@@ -10,34 +10,36 @@
 </head>
 
 <body>
-    <div class="nav">
-        <a href="#section0">My Portfolio</a>
-        <a href="#section1">Flowers</a>
-        <a href="#section2">Light</a>
-        <a href="#section3">Portraits</a>
-        <a href="#section4">Rhododendrons</a> <!-- not done yet -->
+    <div class="mainbody">
+        <div class="nav">
+            <a href="#section0">My Portfolio</a>
+            <a href="#section1">Flowers</a>
+            <a href="#section2">Light</a>
+            <a href="#section3">Portraits</a>
+            <a href="#section4">Rhododendrons</a> <!-- not done yet -->
+        </div>
+
+        <!-- Iframes arranged horizontally -->
+        <iframe src="section0.html" id="section0"></iframe>
+        <iframe src="section1.html" id="section1"></iframe>
+        <iframe src="section2.html" id="section2"></iframe>
+        <iframe src="section3.html" id="section3"></iframe>
+        <iframe src="section4.html" id="section4"></iframe>
+
+        <div class="footer">
+            <h3> Scroll -> </h3>
+        </div>
     </div>
-
-    <!-- Iframes arranged horizontally -->
-    <iframe src="section0.html" id="section0"></iframe>
-    <iframe src="section1.html" id="section1"></iframe>
-    <iframe src="section2.html" id="section2"></iframe>
-    <iframe src="section3.html" id="section3"></iframe>
-    <iframe src="section4.html" id="section4"></iframe>
-
-    <div class="footer">
-        <h3>  Scroll -> </h3>
-    </div>
-
     <script>
         // Redirect any scrolling input to horizontal side scrolling
+        const mainbody = document.querySelector('.mainbody');
         window.addEventListener('wheel', (event) => {
             event.preventDefault(); // Prevent default scrolling behavior
             const scrollAmount = event.deltaY || event.deltaX; // Use deltaY or deltaX for scrolling input
-            window.scrollBy({ left: scrollAmount }); // Apply scrolling to the horizontal axis
-        },
-            { passive: false } // Explicitly set the listener to non-passive
-        );
+            if (mainbody) {
+                mainbody.scrollLeft += scrollAmount;
+            }
+        }, { passive: false });
     </script>
 
 </body>

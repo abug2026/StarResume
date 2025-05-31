@@ -4,32 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rhododendrons</title>
-    <link rel="stylesheet" href="sections.css">
+    <link rel="stylesheet" href="portfolio.css">
 
 </head>
 <body>
-    <h1>Rhododendrons</h1>
-    <div id="imageContainer"></div>
-    <script>
-        // Use a relative path for the image folder
-        const imageFolder = '../portfolio/pictures/Rhodes/';
-        const imageFilenames = [
-            'IMG_4457.JPG',
-            'IMG_2961.JPG',
-            'IMG_3202.JPG',
-            'IMG_3199.JPG',
-            'IMG_4523.JPG'
-        ];
+    <div class="section-page">
+        <h1>Rhododendrons</h1>
+        <div id="imageContainer"></div>
+        <script>
+            // Use a relative path for the image folder
+            const imageFolder = '../portfolio/pictures/Rhodes/';
+            const imageFilenames = [
+                'IMG_4457.JPG',
+                'IMG_2961.JPG',
+                'IMG_3202.JPG',
+                'IMG_3199.JPG',
+                'IMG_4523.JPG'
+            ];
 
-        const imageContainer = document.getElementById('imageContainer');
+            const imageContainer = document.getElementById('imageContainer');
 
-        // Dynamically load all images from the list
-        imageFilenames.forEach(filename => {
-            const imgElement = document.createElement('img');
-            imgElement.src = `${imageFolder}${filename}`;
-            imgElement.alt = "Some more pictures of flowers";
-            imageContainer.appendChild(imgElement);
-        });
-    </script>
+            // Load all images from the list
+            imageFilenames.forEach(filename => {
+                const imgElement = document.createElement('img');
+                imgElement.src = `${imageFolder}${filename}`;
+                imgElement.alt = "Some more pictures of flowers";
+                imageContainer.appendChild(imgElement);
+            });
+        </script>
+    </div>
 </body>
 </html>
