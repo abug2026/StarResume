@@ -238,7 +238,7 @@ function avatarMovement() {
 function imageLoader(inst) {
     for (let i = inst * 3; i < inst * 3 + 3; i++) {
         avatars[i] = new Image();
-        avatars[i].src = `../avatars/avatar${i}.png`;
+        avatars[i].src = `../avatarss/avatar${i}.png`;
     }
     console.log("Loaded avatar images: " + inst);
 }

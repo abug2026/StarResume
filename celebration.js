@@ -6,7 +6,7 @@ const stars = [];
 const STAR_COUNT = 30;
 
 //avatar constants
-const avatarImages = ["../avatars/avatar1.png", "../avatars/avatar4.png", "../avatars/avatar7.png", "../avatars/avatar10.png"];
+const avatarImages = [`../avatarss/avatar1.png`, `../avatarss/avatar4.png`, `../avatarss/avatar7.png`, `../avatarss/avatar10.png`];
 const avatars = [];
 const avatarSpacing = endScreen.width / (avatarImages.length + 1);
 
