@@ -1,18 +1,17 @@
 //Variables
 var user;
-const gridSize = 50; // Define the grid size
+const gridSize = 50;
 var moveDistance = gridSize; // Move one grid square at a time
 var lastDirection = null; // Keep track of the last movement direction
 var signs = []; // Array to hold sign objects
 var stars = []; // Array to hold star objects
-var inventory = []; // Array to hold inventory items
+var inventory = []; // Array to hold inventory items (stars)
 var isOverlayOpen = false; // Flag to track if the overlay is open
 var index;
-var collectedNum = 0;
-var deposited = 0;
+var deposited = 0; //deposited stars counter
 var avatars = [];
 var starImg = new Image(); // Create a new image object for the star
-starImg.src = "star.png"; // Set the source of the image
+starImg.src = "star.png";
 
 
 //Arrow key codes
@@ -34,11 +33,11 @@ function startGame() {
     gameMap.start();
     imageLoader(0); // Load the first set of avatar images
     user = new avatar(50, 50, 550, 300);
-    signs[0] = new sign(100, 50, 150, 0, false, 'openResume');
-    signs[1] = new sign(50, 100, 0, 250, false, 'openAbout');
-    signs[2] = new sign(100, 100, 1400, 250, false, 'openPortfolio');
-    signs[3] = new sign(100, 100, 700, 250, false, 'openHelp');
-    signs[4] = new sign(100, 100, 1300, 0, false, 'depositStars');
+    signs[0] = new sign(150, 150, 150, 0, false, 'openResume');
+    signs[1] = new sign(150, 150, 0, 250, false, 'openAbout');
+    signs[2] = new sign(150, 150, 1350, 250, false, 'openPortfolio');
+    signs[3] = new sign(150, 150, 700, 250, false, 'openHelp');
+    signs[4] = new sign(150, 150, 1200, 0, false, 'Deposit Stars');
 
 }
 
@@ -77,10 +76,11 @@ var gameMap = {
             gameMap.keys[e.keyCode] = false;
         });
 
-        createStars(); // Create stars when the game starts
+        createStars(6); // Create stars when the game starts
     },
-
-    clear: function () { //Clears the map, used to ensure the moving objects appear to move rather than get smeared across the page
+    //Clears the map, used to ensure the moving objects 
+    //appear to move rather than get smeared across the page
+    clear: function () {  
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }
@@ -121,7 +121,8 @@ function avatar(width, height, xpos, ypos) {
         // Ensure the avatar stays within the canvas boundaries
         this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width - (this.width + 10)));
         this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 10)));
-        if (this.xpos < 50 || this.xpos > gameMap.canvas.width - (this.width + 10) - 50 || this.ypos < 50 || this.ypos > gameMap.canvas.height - (this.height + 10) - 25) {
+        if (this.xpos < 50 || this.xpos > gameMap.canvas.width - (this.width + 10) - 50 || 
+            this.ypos < 50 || this.ypos > gameMap.canvas.height - (this.height + 10) - 25) {
             this.mood = 2; // Change mood to angry if out of bounds
         }
 
@@ -162,9 +163,12 @@ function avatarMovement() {
 
     user.speedX = 0;
     user.speedY = 0;
-    var moveDistance = gridSize; // Move one grid square at a time
+    var moveDistance = 50; // Move one grid square at a time
 
-    if (gameMap.keys && gameMap.keys[16]) { moveDistance *= 2; } // Increase speed when shift is held
+    // Increase speed when shift is held
+    if (gameMap.keys && gameMap.keys[16]) { 
+        moveDistance *= 2; 
+    } 
 
     var directions = [];
 
@@ -176,7 +180,8 @@ function avatarMovement() {
         canMove = true; directions.push('left');
     }
     // Move right
-    if ((gameMap.keys[rightArrow] || gameMap.keys[dKey]) && user.xpos + user.width <= gameMap.canvas.width - 50) {
+    if ((gameMap.keys[rightArrow] || gameMap.keys[dKey]) 
+        && user.xpos + user.width <= gameMap.canvas.width - 50) {
         canMove = true; directions.push('right');
     }
     // Move up
@@ -184,7 +189,8 @@ function avatarMovement() {
         canMove = true; directions.push('up');
     }
     // Move down
-    if ((gameMap.keys[downArrow] || gameMap.keys[sKey]) && user.ypos + user.height <= gameMap.canvas.height - 50) {
+    if ((gameMap.keys[downArrow] || gameMap.keys[sKey]) 
+        && user.ypos + user.height <= gameMap.canvas.height - 50) {
         canMove = true; directions.push('down');
     }
 
@@ -205,7 +211,8 @@ function avatarMovement() {
         lastDirection = directions[0];
     }
 
-    switch (lastDirection) { //uses switch cases to allow for multi-directional movement
+    //uses switch cases to allow for multi-directional movement
+    switch (lastDirection) { 
         case 'left':
             user.speedX = -moveDistance;
             break;
@@ -236,10 +243,12 @@ function imageLoader(inst) {
     console.log("Loaded avatar images: " + inst);
 }
 
+//toggles the multiplier for color for the user depending on the user input
+//if those colors haven't been loaded yet, it will not do anything
 function colorToggle() {
     if (deposited > 4) {
         document.addEventListener('keydown', (event) => {
-            if (event.key <= (deposited / 4) +1 && event.key > 0) {
+            if (event.key <= (deposited / 4) + 1 && event.key > 0) {
                 if (event.key === '1') {
                     user.multiplier = 0; // Reset multiplier to 0
                 } else if (event.key === '2') {
@@ -255,6 +264,7 @@ function colorToggle() {
     }
 }
 
+//creates the sign object
 function sign(width, height, xpos, ypos, interacted, page) {
     this.gameMap = gameMap;
     this.width = width;
@@ -263,18 +273,28 @@ function sign(width, height, xpos, ypos, interacted, page) {
     this.ypos = ypos;
 
     this.interacted = false;
+
+    //redraws the sign on the map
     this.update = function () {
         ctx = gameMap.context;
-        ctx.fillStyle = '#002855';
-        ctx.fillRect(this.xpos, this.ypos, this.width + 50, this.height + 50);
+        roundedRect(this.xpos, this.ypos, this.width, this.height, 5, '#002855');
         ctx.fillStyle = '#fdf6e3';
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
         ctx.font = '20px Arial';
-        ctx.fillText(page, this.xpos + 10, this.ypos + 50);
+        let label = page.substring(page.indexOf('n') + 1); // Remove 'open' from the page name
+        // Center of the sign rectangle:
+        var centerX = this.xpos + this.width / 2;
+        var centerY = this.ypos + this.height / 2;
+        ctx.fillText(label, centerX, centerY);
+
     }
 
+    //determines if the user is interacting with the sign
     this.interact = function (user) {
         if (user.xpos >= this.xpos && user.ypos >= this.ypos
-            && user.xpos <= this.xpos + this.width && user.ypos <= this.ypos + this.height) {
+            && user.xpos <= this.xpos + this.width - 50 && 
+            user.ypos <= this.ypos + this.height - 50) {
             console.log("interacted with sign!");
             this.interacted = true;
         } else {
@@ -286,10 +306,18 @@ function sign(width, height, xpos, ypos, interacted, page) {
 
     this.openPage = function (index) {
         if (gameMap.keys[space]) {
-            console.log("openPage called for sign at " + this.xpos + ", " + this.ypos + " | index: " + index);
+            console.log("openPage called for sign at " + this.xpos 
+            + ", " + this.ypos + " | index: " + index);
             openPage(index);
         }
     };
+}
+
+function roundedRect(x, y, width, height, radius, color) {
+    ctx.beginPath();
+    ctx.roundRect(x, y, width, height, radius);
+    ctx.fillStyle = color;
+    ctx.fill();
 }
 
 //defines the star object
@@ -301,14 +329,15 @@ function star(xpos, ypos, collected) {
     this.index = 0;
     this.update = function () {
         if (this.collected) {
-            this.xpos = ((user.xpos + 10) + Math.cos(this.index / 2.5 * Math.PI) * 30); // Move the star to the user's position
-            this.ypos = ((user.ypos + 10) + Math.sin(this.index / 2.5 * Math.PI) * 30); // Move the star to the user's position
+            // Move the star to the user's position
+            this.xpos = ((user.xpos + 10) + Math.cos(this.index / 2.5 * Math.PI) * 30); 
+            this.ypos = ((user.ypos + 10) + Math.sin(this.index / 2.5 * Math.PI) * 30);
         }
         ctx = gameMap.context;
         ctx.drawImage(starImg, this.xpos, this.ypos, 25, 25); // Use starImg here
     }
     this.collect = function (user) {
-        if (collectedNum > 4) {
+        if (inventory.length > 4) {
             console.log("You have collected too many stars!"); // Limit the number of stars that can be collected
         }
         else if (user.xpos >= this.xpos - 50 && user.ypos >= this.ypos - 50
@@ -321,21 +350,21 @@ function star(xpos, ypos, collected) {
             this.collected = true;
             this.xpos = user.xpos; // Move the star to the user's position
             this.ypos = user.ypos; // Move the star to the user's position
-            collectedNum++;
-            this.index = collectedNum; // Set the index of the star
-        } else {
+            this.index = inventory.length;
+
+        }
+        else {
             console.log("no star detected");
             this.collected = false;
         }
-
     }
 }
 
 //creates the initial stars on the map
-function createStars() {
-    for (var i = 0; i < 12; i++) { // Create 10 stars   
-        var xpos = Math.floor(Math.random() * (gameMap.canvas.width - 50)) + 50; // Random x position
-        var ypos = Math.floor(Math.random() * (gameMap.canvas.height - 50)) + 50; // Random y position
+function createStars(num) {
+    for (var i = 0; i < num; i++) { // Create 10 stars   
+        var xpos = Math.floor(Math.random() * (gameMap.canvas.width - 50));
+        var ypos = Math.floor(Math.random() * (gameMap.canvas.height - 50));
         stars[i] = new star(xpos, ypos, false); // Create a new star object
         stars[i].update(); // Update the star's position
         stars[i].index = i; // Set the index of the star
@@ -345,19 +374,48 @@ function createStars() {
 //loads new stars everytime the deposited stars is a greater multiple of 4
 function depositStars() {
     deposited += inventory.length; // Increment the deposited count by the number of stars in the inventory
-    if (inventory.length > 0 && (deposited / 4) >= user.multiplier) {
+    if (inventory.length > 0 && (deposited / 4) >= user.multiplier && deposited < 16) {
         user.multiplier = Math.floor(deposited / 4); // Set the multiplier based on the deposited stars
         imageLoader(Math.floor(deposited / 4)); // Load the second set of avatar images 
         console.log("Loaded avatar images: " + (deposited / 4));
 
     }
+    if (deposited === 6) {
+        createStars(6); // Create new stars when the deposited count reaches 6
+    } else if (deposited === 12) {
+        createStars(4); // Create new stars when the deposited count reaches 12
+    }
     inventory = []; // Clear the inventory
-    collectedNum = 0; // Reset the collected number
     console.log("Star deposited! Inventory size: " + inventory.length);
     console.log("Star deposited! Stars left: " + stars.length);
     console.log("Star deposited! Stars deposited: " + deposited);
     updateMap();
 
+    if (deposited === 16) {
+        celebrationPage(); // Call the celebration page function when all 12 stars are deposited
+    }
+
+}
+
+function celebrationPage() {
+    document.getElementById('celebrationOverlay').style.display = 'block';
+    isOverlayOpen = true; // Set the flag to true
+    let close = document.getElementById('celebrationCloseBtn');
+    if (!close) {
+        close = document.createElement('button');
+        close.id = 'celebrationCloseBtn';
+        close.innerText = 'Close';
+        document.getElementById('celebrationOverlay').appendChild(close);
+    } else {
+        close.style.display = 'block';
+    }
+
+    close.onclick = function () {
+        document.getElementById('celebrationOverlay').style.display = 'none';
+        close.style.display = 'none';
+        isOverlayOpen = false;
+        updateMap(); // Update the map after closing the celebration overlay
+    };
 }
 
 
@@ -368,14 +426,19 @@ function updateMap() {
     for (var i = 0; i < signs.length; i++) {
         signs[i].update();
     }
-    for (var i = 0; i < stars.length; i++) {
-        stars[i].update();
+    for (var j = 0; j < stars.length; j++) {
+        stars[j].update();
     }
-    for (var i = 0; i < inventory.length; i++) {
-        inventory[i].update(); // Update the star's position
+    for (var k = 0; k < inventory.length; k++) {
+        inventory[k].update(); // Update the star's position
     }
+    var starHeight = 15;
     for (var i = 0; i < deposited; i++) {
-        ctx.drawImage(starImg, 1325 + 25 * (i % 4), 75 + (Math.floor(i / 4) * 25), 25, 25); // Use starImg here
+        if (i >= 8) {
+            starHeight = 35; // Adjust height for more than 4 stars
+        }
+        ctx.drawImage(starImg, 1225 + 25 * (i % 4), starHeight 
+        + (Math.floor(i / 4) * 25), 25, 25);
     }
     user.update();
 
@@ -397,7 +460,7 @@ function openPage(index) {
     } else if (index === 1) {
         document.getElementById('aboutOverlay').style.display = 'block';
     } else if (index === 2) {
-        window.location.href = "./portfolio.html";
+        document.getElementById('portfolioOverlay').style.display = 'block';
     } else if (index === 3) {
         document.getElementById('helpOverlay').style.display = 'block';;
     }
@@ -421,6 +484,8 @@ function closeResume(index) {
         document.getElementById('aboutOverlay').style.display = 'none';
     } else if (index === 3) {
         document.getElementById('helpOverlay').style.display = 'none';
+    } else if (index === 2) {
+        document.getElementById('portfolioOverlay').style.display = 'none';
     }
 
     // Hide the homeButton div (which contains both canvases)
