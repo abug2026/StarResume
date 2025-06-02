@@ -6,7 +6,8 @@ const stars = [];
 const STAR_COUNT = 30;
 
 //avatar constants
-const avatarImages = [`../avatarss/avatar1.png`, `../avatarss/avatar4.png`, `../avatarss/avatar7.png`, `../avatarss/avatar10.png`];
+const avatarImages = [`./avatarss/avatar1.png`, `./avatarss/avatar4.png`,
+     `./avatarss/avatar7.png`, `./avatarss/avatar10.png`];
 const avatars = [];
 const avatarSpacing = endScreen.width / (avatarImages.length + 1);
 
@@ -61,7 +62,7 @@ for (let i = 0; i < avatarImages.length; i++) {
 
 // Animation function
 function animate() {
-    console.log("Animating celebration screen");
+    //console.log("Animating celebration screen");
     ctx.clearRect(0, 0, endScreen.width, endScreen.height);
 
     // Draw and update stars

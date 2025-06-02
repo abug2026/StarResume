@@ -61,7 +61,7 @@ var gameMap = {
         window.addEventListener('keydown', function (e) {
             // Check if the pressed key is not a movement key
             if (!movementKeys.includes(e.keyCode)) {
-                console.log('Non-movement key pressed. Resetting direction.');
+                //console.log('Non-movement key pressed. Resetting direction.');
                 lastDirection = null;
                 user.speedX = 0;
                 user.speedY = 0;
@@ -80,7 +80,7 @@ var gameMap = {
     },
     //Clears the map, used to ensure the moving objects 
     //appear to move rather than get smeared across the page
-    clear: function () {  
+    clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }
@@ -100,7 +100,7 @@ function avatar(width, height, xpos, ypos) {
 
     this.moodImage = function () {
         var tempMood = (this.mood + (this.multiplier * 3));
-        console.log("Setting mood image to: " + tempMood);
+        //console.log("Setting mood image to: " + tempMood);
         if (this.mood >= 0 && this.mood < avatars.length) {
             this.image = avatars[tempMood];
         }
@@ -121,7 +121,7 @@ function avatar(width, height, xpos, ypos) {
         // Ensure the avatar stays within the canvas boundaries
         this.xpos = Math.max(0, Math.min(this.xpos, gameMap.canvas.width - (this.width + 10)));
         this.ypos = Math.max(0, Math.min(this.ypos, gameMap.canvas.height - (this.height + 10)));
-        if (this.xpos < 50 || this.xpos > gameMap.canvas.width - (this.width + 10) - 50 || 
+        if (this.xpos < 50 || this.xpos > gameMap.canvas.width - (this.width + 10) - 50 ||
             this.ypos < 50 || this.ypos > gameMap.canvas.height - (this.height + 10) - 25) {
             this.mood = 2; // Change mood to angry if out of bounds
         }
@@ -131,11 +131,11 @@ function avatar(width, height, xpos, ypos) {
 
         //checks if user overlaps with any signs
         for (var i = 0; i < signs.length; i++) {
-            console.log("Checking interaction with sign at index " + i + ": "
-                + signs[i].xpos + signs[i].ypos + " | " + user.xpos + ", " + user.ypos);
+            //console.log("Checking interaction with sign at index " + i + ": "
+            //    + signs[i].xpos + signs[i].ypos + " | " + user.xpos + ", " + user.ypos);
             signs[i].interact(user);
             if (signs[i].interacted) {
-                console.log("Interacted with sign at index " + i);
+                //console.log("Interacted with sign at index " + i);
                 index = i; // Store the index of the sign that was clicked
                 this.mood = 1; // Change mood to happy
                 signs[i].openPage(i);
@@ -144,8 +144,8 @@ function avatar(width, height, xpos, ypos) {
         }
 
         for (var i = 0; i < stars.length; i++) {
-            console.log("Checking to collect star at index " + i + ": "
-                + stars[i].xpos + stars[i].ypos + " | " + user.xpos + ", " + user.ypos);
+            //console.log("Checking to collect star at index " + i + ": "
+            //    + stars[i].xpos + stars[i].ypos + " | " + user.xpos + ", " + user.ypos);
             stars[i].collect(user);
 
         }
@@ -166,9 +166,9 @@ function avatarMovement() {
     var moveDistance = 50; // Move one grid square at a time
 
     // Increase speed when shift is held
-    if (gameMap.keys && gameMap.keys[16]) { 
-        moveDistance *= 2; 
-    } 
+    if (gameMap.keys && gameMap.keys[16]) {
+        moveDistance *= 2;
+    }
 
     var directions = [];
 
@@ -180,7 +180,7 @@ function avatarMovement() {
         canMove = true; directions.push('left');
     }
     // Move right
-    if ((gameMap.keys[rightArrow] || gameMap.keys[dKey]) 
+    if ((gameMap.keys[rightArrow] || gameMap.keys[dKey])
         && user.xpos + user.width <= gameMap.canvas.width - 50) {
         canMove = true; directions.push('right');
     }
@@ -189,7 +189,7 @@ function avatarMovement() {
         canMove = true; directions.push('up');
     }
     // Move down
-    if ((gameMap.keys[downArrow] || gameMap.keys[sKey]) 
+    if ((gameMap.keys[downArrow] || gameMap.keys[sKey])
         && user.ypos + user.height <= gameMap.canvas.height - 50) {
         canMove = true; directions.push('down');
     }
@@ -212,7 +212,7 @@ function avatarMovement() {
     }
 
     //uses switch cases to allow for multi-directional movement
-    switch (lastDirection) { 
+    switch (lastDirection) {
         case 'left':
             user.speedX = -moveDistance;
             break;
@@ -238,7 +238,7 @@ function avatarMovement() {
 function imageLoader(inst) {
     for (let i = inst * 3; i < inst * 3 + 3; i++) {
         avatars[i] = new Image();
-        avatars[i].src = `../avatarss/avatar${i}.png`;
+        avatars[i].src = `./avatarss/avatar${i}.png`;
     }
     console.log("Loaded avatar images: " + inst);
 }
@@ -293,12 +293,12 @@ function sign(width, height, xpos, ypos, interacted, page) {
     //determines if the user is interacting with the sign
     this.interact = function (user) {
         if (user.xpos >= this.xpos && user.ypos >= this.ypos
-            && user.xpos <= this.xpos + this.width - 50 && 
+            && user.xpos <= this.xpos + this.width - 50 &&
             user.ypos <= this.ypos + this.height - 50) {
-            console.log("interacted with sign!");
+            //console.log("interacted with sign!");
             this.interacted = true;
         } else {
-            console.log("no sign detected");
+            //console.log("no sign detected");
             this.interacted = false;
         }
 
@@ -306,8 +306,8 @@ function sign(width, height, xpos, ypos, interacted, page) {
 
     this.openPage = function (index) {
         if (gameMap.keys[space]) {
-            console.log("openPage called for sign at " + this.xpos 
-            + ", " + this.ypos + " | index: " + index);
+            console.log("openPage called for sign at " + this.xpos
+                + ", " + this.ypos + " | index: " + index);
             openPage(index);
         }
     };
@@ -330,7 +330,7 @@ function star(xpos, ypos, collected) {
     this.update = function () {
         if (this.collected) {
             // Move the star to the user's position
-            this.xpos = ((user.xpos + 10) + Math.cos(this.index / 2.5 * Math.PI) * 30); 
+            this.xpos = ((user.xpos + 10) + Math.cos(this.index / 2.5 * Math.PI) * 30);
             this.ypos = ((user.ypos + 10) + Math.sin(this.index / 2.5 * Math.PI) * 30);
         }
         ctx = gameMap.context;
@@ -342,11 +342,11 @@ function star(xpos, ypos, collected) {
         }
         else if (user.xpos >= this.xpos - 50 && user.ypos >= this.ypos - 50
             && user.xpos <= this.xpos + 50 && user.ypos <= this.ypos + 50) {
-            console.log("interacted with star!");
+            //console.log("interacted with star!");
             inventory.push(this); // Add the star to the inventory
             stars.splice(stars.indexOf(this), 1); // Remove the star from the array
-            console.log("Star collected! Inventory size: " + inventory.length);
-            console.log("Star collected! Stars left: " + stars.length);
+            //console.log("Star collected! Inventory size: " + inventory.length);
+            //console.log("Star collected! Stars left: " + stars.length);
             this.collected = true;
             this.xpos = user.xpos; // Move the star to the user's position
             this.ypos = user.ypos; // Move the star to the user's position
@@ -354,7 +354,7 @@ function star(xpos, ypos, collected) {
 
         }
         else {
-            console.log("no star detected");
+            //console.log("no star detected");
             this.collected = false;
         }
     }
@@ -386,9 +386,9 @@ function depositStars() {
         createStars(4); // Create new stars when the deposited count reaches 12
     }
     inventory = []; // Clear the inventory
-    console.log("Star deposited! Inventory size: " + inventory.length);
+    /*console.log("Star deposited! Inventory size: " + inventory.length);
     console.log("Star deposited! Stars left: " + stars.length);
-    console.log("Star deposited! Stars deposited: " + deposited);
+    console.log("Star deposited! Stars deposited: " + deposited);*/
     updateMap();
 
     if (deposited === 16) {
@@ -437,8 +437,8 @@ function updateMap() {
         if (i >= 8) {
             starHeight = 35; // Adjust height for more than 8 stars
         }
-        ctx.drawImage(starImg, 1225 + 25 * (i % 4), starHeight 
-        + (Math.floor(i / 4) * 25), 25, 25);
+        ctx.drawImage(starImg, 1225 + 25 * (i % 4), starHeight
+            + (Math.floor(i / 4) * 25), 25, 25);
     }
     user.update();
 
@@ -473,7 +473,13 @@ function openPage(index) {
         homeButton.style.display = 'block';
 
         isOverlayOpen = true; // Set the flag to true
+        // Add event listener to homeCanvas to close the resume overlay
+        document.getElementById('homeCanvas').addEventListener('click', () => {
+            closeResume(index);
+        });
     }
+
+
 }
 
 function closeResume(index) {
@@ -499,10 +505,6 @@ document.addEventListener('click', (event) => {
     console.log('Clicked element:', event.target);
 });
 
-// Add event listener to homeCanvas to close the resume overlay
-document.getElementById('homeCanvas').addEventListener('click', () => {
-    closeResume(index);
-});
 
 //add event listener so esc key closes the overlay
 document.addEventListener('keydown', (event) => {
