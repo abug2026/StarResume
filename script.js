@@ -454,16 +454,16 @@ window.addEventListener('resize', () => {
 function openPage(index) {
     console.log('Open page!');
     if (index === 0) {
-        document.getElementById('iframe').src = 'resume.html';
+        document.getElementById('iframeMain').src = 'resume.html';
     } else if (index === 1) {
-        document.getElementById('iframe').src = 'about.html';
+        document.getElementById('iframeMain').src = 'about.html';
     } else if (index === 2) {
-        document.getElementById('iframe').src = 'portfolio.html';
+        document.getElementById('iframeMain').src = 'portfolio.html';
     } else if (index === 3) {
-        document.getElementById('iframe').src = 'help.html';
+        document.getElementById('iframeMain').src = 'help.html';
     }
 
-    console.log(document.getElementById('iframe').src);
+    console.log(document.getElementById('iframeMain').src);
 
     if (index === 4) {
         depositStars();

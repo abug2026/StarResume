@@ -28,7 +28,7 @@ canvas {
 
 
 /* Iframe contents itself */
-#iframe {
+#iframeMain, #iframeCele {
     overflow: auto;
     width: 100%;
     height: 100%;
