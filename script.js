@@ -337,11 +337,9 @@ function star(xpos, ypos, collected) {
         ctx.drawImage(starImg, this.xpos, this.ypos, 25, 25); // Use starImg here
     }
     this.collect = function (user) {
-        if (inventory.length > 4) {
-            console.log("You have collected too many stars!"); // Limit the number of stars that can be collected
-        }
-        else if (user.xpos >= this.xpos - 50 && user.ypos >= this.ypos - 50
-            && user.xpos <= this.xpos + 50 && user.ypos <= this.ypos + 50) {
+        nearStar = user.xpos >= this.xpos - 50 && user.ypos >= this.ypos - 50
+            && user.xpos <= this.xpos + 50 && user.ypos <= this.ypos + 50;
+        if (nearStar && inventory.length <= 4) {
             //console.log("interacted with star!");
             inventory.push(this); // Add the star to the inventory
             stars.splice(stars.indexOf(this), 1); // Remove the star from the array
@@ -456,18 +454,21 @@ window.addEventListener('resize', () => {
 function openPage(index) {
     console.log('Open page!');
     if (index === 0) {
-        document.getElementById('resumeOverlay').style.display = 'block';
+        document.getElementById('iframe').src = 'resume.html';
     } else if (index === 1) {
-        document.getElementById('aboutOverlay').style.display = 'block';
+        document.getElementById('iframe').src = 'about.html';
     } else if (index === 2) {
-        document.getElementById('portfolioOverlay').style.display = 'block';
+        document.getElementById('iframe').src = 'portfolio.html';
     } else if (index === 3) {
-        document.getElementById('helpOverlay').style.display = 'block';;
+        document.getElementById('iframe').src = 'help.html';
     }
+
+    console.log(document.getElementById('iframe').src);
 
     if (index === 4) {
         depositStars();
     } else {
+        document.getElementById('generalOverlay').style.display = 'block'; // Show the overlay
         // Show the homeButton div (which contains both canvases)
         const homeButton = document.getElementById('homeButton');
         homeButton.style.display = 'block';
@@ -477,6 +478,13 @@ function openPage(index) {
         document.getElementById('homeCanvas').addEventListener('click', () => {
             closeResume(index);
         });
+
+        //add event listener so esc key closes the overlay
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeResume(index);
+            }
+        });
     }
 
 
@@ -484,15 +492,7 @@ function openPage(index) {
 
 function closeResume(index) {
     console.log('Close resume clicked!');
-    if (index === 0) {
-        document.getElementById('resumeOverlay').style.display = 'none';
-    } else if (index === 1) {
-        document.getElementById('aboutOverlay').style.display = 'none';
-    } else if (index === 3) {
-        document.getElementById('helpOverlay').style.display = 'none';
-    } else if (index === 2) {
-        document.getElementById('portfolioOverlay').style.display = 'none';
-    }
+    document.getElementById('generalOverlay').style.display = 'none';
 
     // Hide the homeButton div (which contains both canvases)
     const homeButton = document.getElementById('homeButton');
@@ -505,12 +505,5 @@ document.addEventListener('click', (event) => {
     console.log('Clicked element:', event.target);
 });
 
-
-//add event listener so esc key closes the overlay
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-        closeResume(index);
-    }
-});
 
 

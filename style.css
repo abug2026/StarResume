@@ -14,7 +14,7 @@ canvas {
 }
 
 /* Iframe overlay setup*/
-#resumeOverlay, #aboutOverlay, #portfolioOverlay, #helpOverlay{
+#generalOverlay {
     position: fixed;
     pointer-events: auto;
     top: 30px;
